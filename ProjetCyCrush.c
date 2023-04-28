@@ -3,14 +3,14 @@
 #include <time.h>
 char generateGrid(char grid[][100],int GRID_SIZE);
 char gridverifier(char grid[][100],int GRID_SIZE);
-
+void checkAlignment(char grid[][100], int GRID_SIZE, int row, int col);
 
 //Création d'une grille aléatoire
 char generateGrid(char grid[][100],int GRID_SIZE) {
     srand(time(NULL));
     printf("   ");
     for (int i = 0; i < GRID_SIZE; i++) {
-        printf("%c ",'A'+i);
+        printf("%c ", 'A' + i);
     }
     printf("\n");
     printf("   ");
@@ -28,19 +28,21 @@ char generateGrid(char grid[][100],int GRID_SIZE) {
         }
         //Affichage des lignes d'itération(à gauche)
         for (int j = 0; j < GRID_SIZE; j++) {
-            switch(grid[i][j] = 'A' + rand() % 4){
+            grid[i][j] = 'A' + rand() % 4;
+            checkAlignment(grid, GRID_SIZE, i, j);
+            switch(grid[i][j]){
                 case 'A':
                     printf("\033[1;31m");//rouge
-                break;
+                    break;
                 case 'B':
                     printf("\033[1;32m");//vert
-                break;
+                    break;
                 case 'C':
-                    printf("\033[1;33m");//rouge
-                break;
+                    printf("\033[1;33m");//jaune
+                    break;
                 case 'D':
                     printf("\033[1;34m");//bleu
-                break;
+                    break;
             }
             printf("%c ", grid[i][j]);//Affichage du tableau entier
         }
@@ -49,6 +51,29 @@ char generateGrid(char grid[][100],int GRID_SIZE) {
     }
     gridverifier(grid,GRID_SIZE);
 }
+
+
+void checkAlignment(char grid[][100], int GRID_SIZE, int row, int col) {
+    // On vérifie les alignements possibles pour les deux directions horizontale et verticale
+    if (row > 1) {
+        if (grid[row][col] == grid[row - 1][col] && grid[row - 1][col] == grid[row - 2][col]) {
+            // Si l'alignement est détecté, on réassigne une lettre à la case courante
+            do {
+                grid[row][col] = 'A' + rand() % 4;
+            } while (grid[row][col] == grid[row - 1][col] && grid[row - 1][col] == grid[row - 2][col]);
+        }
+    }
+
+    if (col > 1) {
+        if (grid[row][col] == grid[row][col - 1] && grid[row][col - 1] == grid[row][col - 2]) {
+            // Si l'alignement est détecté, on réassigne une lettre à la case courante
+            do {
+                grid[row][col] = 'A' + rand() % 4;
+            } while (grid[row][col] == grid[row][col - 1] && grid[row][col - 1] == grid[row][col - 2]);
+        }
+    }
+}
+
 
 
 char gridverifier(char grid[][100],int GRID_SIZE){
@@ -71,32 +96,6 @@ char gridverifier(char grid[][100],int GRID_SIZE){
                 return generateGrid(grid,GRID_SIZE);
             }
         }
-    }
-}
-
-
-//Affichage de la futur grille modifiée
-void printGrid(char grid[][100], int GRID_SIZE) {
-    int i, j;
-    for (i = 0; i < GRID_SIZE; i++) {
-        for (j = 0; j < GRID_SIZE; j++) {
-            switch(grid[i][j]) {
-                case 'A':
-                    printf("\033[1;31m");
-                    break;
-                case 'B':
-                    printf("\033[1;32m");
-                    break;
-                case 'C':
-                    printf("\033[1;33m");
-                    break;
-                case 'D':
-                    printf("\033[1;34m");
-                    break;
-            }
-            printf("%c ", grid[i][j]);
-        }
-        printf("\n");
     }
 }
 
