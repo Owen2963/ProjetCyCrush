@@ -329,7 +329,7 @@ int main() {
     do{
     printf("Entrez la taille de la grille : ");
     scanf("%d", &GRID_SIZE);
-    }while(GRID_SIZE>26);
+    }while(GRID_SIZE<1||GRID_SIZE>26);
     char grid[GRID_SIZE][100];
     generateGrid(grid,GRID_SIZE);
     moveLetter(grid,GRID_SIZE);
