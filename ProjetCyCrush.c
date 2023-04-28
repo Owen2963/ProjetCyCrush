@@ -3,8 +3,11 @@
 #include <time.h>
 char generateGrid(char grid[][100],int GRID_SIZE);
 char gridverifier(char grid[][100],int GRID_SIZE);
-//Définition des fonctions pour éviter des problèmes d'appels
+
+
+//Création d'une grille aléatoire
 char generateGrid(char grid[][100],int GRID_SIZE) {
+    srand(time(NULL));
     printf("   ");
     for (int i = 0; i < GRID_SIZE; i++) {
         printf("%c ",'A'+i);
@@ -25,24 +28,18 @@ char generateGrid(char grid[][100],int GRID_SIZE) {
         }
         //Affichage des lignes d'itération(à gauche)
         for (int j = 0; j < GRID_SIZE; j++) {
-            switch(grid[i][j] = 'A' + rand() % 6){
+            switch(grid[i][j] = 'A' + rand() % 4){
                 case 'A':
-                    printf("\033[0;31m");//rouge
+                    printf("\033[1;31m");//rouge
                 break;
                 case 'B':
-                    printf("\033[0;32m");//vert
+                    printf("\033[1;32m");//vert
                 break;
                 case 'C':
-                    printf("\033[0;33m");//rouge
+                    printf("\033[1;33m");//rouge
                 break;
                 case 'D':
-                    printf("\033[0;34m");//bleu
-                break;
-                case 'E':
-                    printf("\033[0;30m");//gris/noir
-                break;
-                case 'F':
-                    printf("\033[0;36m");//cyan
+                    printf("\033[1;34m");//bleu
                 break;
             }
             printf("%c ", grid[i][j]);//Affichage du tableau entier
@@ -52,6 +49,7 @@ char generateGrid(char grid[][100],int GRID_SIZE) {
     }
     gridverifier(grid,GRID_SIZE);
 }
+
 
 char gridverifier(char grid[][100],int GRID_SIZE){
     for (int i = 0; i < GRID_SIZE; i++) {
@@ -64,11 +62,11 @@ char gridverifier(char grid[][100],int GRID_SIZE){
                 printf("\n");
                 return generateGrid(grid,GRID_SIZE);
             }
-            else if(grid[i][j]==grid[i+1][j+1]&&grid[i+1][j+1]==grid[i+2][j+2]){//3 chiffres alignés diagonalement à droite
+            else if(grid[i][j]==grid[i+1][j+1]&&grid[i+1][j+1]==grid[i+2][j+2]){//3 chiffres alignés diagonalement d'en haut à gauche vers en bas à droite
                 printf("\n");
                 return generateGrid(grid,GRID_SIZE);
             }
-            else if(grid[i][j]==grid[i+1][j-1]&&grid[i+1][j-1]==grid[i+2][j-2]){//3 chiffres alignés diagonalement à gauche
+            else if(grid[i][j]==grid[i+1][j-1]&&grid[i+1][j-1]==grid[i+2][j-2]){//3 chiffres alignés diagonalement d'en bas gauche vers en haut à droite
                 printf("\n");
                 return generateGrid(grid,GRID_SIZE);
             }
@@ -76,21 +74,48 @@ char gridverifier(char grid[][100],int GRID_SIZE){
     }
 }
 
+
+//Affichage de la futur grille modifiée
+void printGrid(char grid[][100], int GRID_SIZE) {
+    int i, j;
+    for (i = 0; i < GRID_SIZE; i++) {
+        for (j = 0; j < GRID_SIZE; j++) {
+            switch(grid[i][j]) {
+                case 'A':
+                    printf("\033[1;31m");
+                    break;
+                case 'B':
+                    printf("\033[1;32m");
+                    break;
+                case 'C':
+                    printf("\033[1;33m");
+                    break;
+                case 'D':
+                    printf("\033[1;34m");
+                    break;
+            }
+            printf("%c ", grid[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+
 void moveLetter(char grid[][100], int GRID_SIZE) {
-    int x1, x2, y3, y4;
+    int x1, x2, v3, v4;
     char  y1 ,y2;
-    printf("Entrez les coordonnees de la lettre que vous voulez deplacer (ligne, colonne): ");
+    printf("Entrez les coordonnees de la lettre que vous voulez deplacer (ligne colonne): ");
     scanf("%d %c", &x1, &y1);
     //On vérifie que l'élément est dans le tableau
-    if (x1 < 0 || x1 > GRID_SIZE+1 || y1 < 'A' || y1 > 'F') {
+    if (x1 < 0 || x1 > GRID_SIZE+1 || y1 < 'A' || y1 > 'D') {
         printf("Coordonnees invalides. Entrez de nouvelles coordonnees.\n");
         moveLetter(grid, GRID_SIZE);
         return;
     }
-    printf("Entrez les coordonnees de la destination (ligne, colonne): ");
+    printf("Entrez les coordonnees de la destination (ligne colonne): ");
     scanf("%d %c", &x2, &y2);
     //On vérifie que l'élément est dans le tableau
-    if (x2 < 0 || x2 > GRID_SIZE+1 || y2 < 'A' || y2 > 'F') {
+    if (x2 < 0 || x2 > GRID_SIZE+1 || y2 < 'A' || y2 > 'D') {
         printf("Coordonnees invalides,vous sortez du tableau. Entrez de nouvelles coordonnees.\n");
         moveLetter(grid, GRID_SIZE);
         return;
@@ -103,48 +128,36 @@ void moveLetter(char grid[][100], int GRID_SIZE) {
 }
     switch(y1){
             case 'A':
-                y3=1;
+                v3=1;
             break;
             case 'B':
-                y3=2;
+                v3=2;
             break;
             case 'C':
-                y3=3;
+                v3=3;
             break;
             case 'D':
-                y3=4;
-            break;
-            case 'E':
-                y3=5;
-            break;
-            case 'F':
-                y3=6;
+                v3=4;
             break;
         }
         switch(y2){
             case 'A':
-                y4=1;
+                v4=1;
             break;
             case 'B':
-                y4=2;
+                v4=2;
             break;
             case 'C':
-                y4=3;
+                v4=3;
             break;
             case 'D':
-                y4=4;
-            break;
-            case 'E':
-                y4=5;
-            break;
-            case 'F':
-                y4=6;
+                v4=4;
             break;
         }
     //Echange des cases
-    char temp = grid[x1-1][y3-1];
-    grid[x1-1][y3-1] = grid[x2-1][y4-1];
-    grid[x2-1][y4-1] = temp;
+    char temp = grid[x1-1][v3-1];
+    grid[x1-1][v3-1] = grid[x2-1][v4-1];
+    grid[x2-1][v4-1] = temp;
     printf("   ");
     for (int i = 0; i < GRID_SIZE; i++) {
         printf("%c ",'A'+i);
@@ -157,7 +170,7 @@ void moveLetter(char grid[][100], int GRID_SIZE) {
     printf("\n");
     //Affichage des colonnes d'itération (en haut)
     for (int i = 0; i < GRID_SIZE; i++) {
-        if(i<9){
+        if(i<9){ // tableau au dessus de 9
             printf("%d |",i+1);
         }
         else{
@@ -166,27 +179,21 @@ void moveLetter(char grid[][100], int GRID_SIZE) {
         for (int j = 0; j < GRID_SIZE; j++) {
             switch(grid[i][j]){
                 case 'A':
-                    printf("\033[0;31m");//rouge
+                    printf("\033[1;31m");//rouge
                 break;
                 case 'B':
-                    printf("\033[0;32m");//vert
+                    printf("\033[1;32m");//vert
                 break;
                 case 'C':
-                    printf("\033[0;33m");//rouge
+                    printf("\033[1;33m");//rouge
                 break;
                 case 'D':
-                    printf("\033[0;34m");//bleu
-                break;
-                case 'E':
-                    printf("\033[0;30m");//gris/noir
-                break;
-                case 'F':
-                    printf("\033[0;36m");//cyan
+                    printf("\033[1;34m");//bleu
                 break;
             }
             printf("%c ", grid[i][j]);
         }
-        printf("\033[0;37m");
+        printf("\033[1;37m");
         printf("\n");
     }
 }
