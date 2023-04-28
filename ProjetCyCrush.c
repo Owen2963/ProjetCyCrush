@@ -25,30 +25,31 @@ char generateGrid(char grid[][100],int GRID_SIZE){
         else{
             printf("%d|",i+1);
         }
-        //Affichage des lignes d'itération(à gauche)
-        for (int j = 0; j < GRID_SIZE; j++) {
-            grid[i][j] = 'A' + rand() % 4;
-            gridverifing(grid, GRID_SIZE, i, j);
-            switch(grid[i][j]){
-                case 'A':
-                    printf("\033[1;31m");//rouge
-                    break;
-                case 'B':
-                    printf("\033[1;32m");//vert
-                    break;
-                case 'C':
-                    printf("\033[1;33m");//jaune
-                    break;
-                case 'D':
-                    printf("\033[1;34m");//bleu
-                    break;
-            }
-            printf("%c ", grid[i][j]);//Affichage du tableau entier
+    //Affichage des lignes d'itération(à gauche)
+    for (int j = 0; j < GRID_SIZE; j++) {
+        grid[i][j] = 'A' + rand() % 4;
+        gridverifing(grid, GRID_SIZE, i, j);//il vérifie les contraintes au fil du temps 
+        switch(grid[i][j]){
+            case 'A':
+                printf("\033[1;31m");//rouge
+                break;
+            case 'B':
+                printf("\033[1;32m");//vert
+                break;
+            case 'C':
+                printf("\033[1;33m");//jaune
+                break;
+            case 'D':
+                printf("\033[1;34m");//bleu
+                break;
         }
-        printf("\033[0;37m");
-        printf("\n");
+        printf("%c ", grid[i][j]);//Affichage du tableau entier
+    }
+    printf("\033[1;37m");
+    printf("\n");
     }
 }
+
 
 void gridverifing(char grid[][100],int GRID_SIZE, int i, int j){
     if(grid[i][j]==grid[i][j-1]&&grid[i][j-1]==grid[i][j-2]){//3 lettres alignés horizontalement
@@ -67,6 +68,7 @@ void gridverifing(char grid[][100],int GRID_SIZE, int i, int j){
         }while((grid[i][j]==grid[i-1][j+1]&&grid[i-1][j+1]==grid[i-2][j+2])||(grid[i][j]==grid[i-1][j-1]&&grid[i-1][j-1]==grid[i-2][j-2]));
     }
 }
+
 
 char gridverifier(char grid[][100],int GRID_SIZE){
     for (int i = 0; i < GRID_SIZE; i++) {
@@ -90,6 +92,7 @@ char gridverifier(char grid[][100],int GRID_SIZE){
         }
     }
 }
+
 
 void moveLetter(char grid[][100], int GRID_SIZE) {
     int x1, x2, y3, y4;
@@ -115,7 +118,7 @@ void moveLetter(char grid[][100], int GRID_SIZE) {
         printf("Coordonnees invalides, les cases ne sont pas cote a cote. Entrez de nouvelles coordonnees.\n");
         moveLetter(grid, GRID_SIZE);
         return;
-}
+    }
     switch(y1){
             case 'A':
                 y3=1;
@@ -195,87 +198,87 @@ void moveLetter(char grid[][100], int GRID_SIZE) {
             case 'Z':
                 y3=26;
             break;
-        }
-        switch(y2){
-            case 'A':
-                y4=1;
-            break;
-            case 'B':
-                y4=2;
-            break;
-            case 'C':
-                y4=3;
-            break;
-            case 'D':
-                y4=4;
-            break;
-            case 'E':
-                y4=5;
-            break;
-            case 'F':
-                y4=6;
-            break;
-            case 'G':
-                y4=7;
-            break;
-            case 'H':
-                y4=8;
-            break;
-            case 'I':
-                y4=9;
-            break;
-            case 'J':
-                y4=10;
-            break;
-            case 'K':
-                y4=11;
-            break;
-            case 'L':
-                y4=12;
-            break;
-            case 'M':
-                y4=13;
-            break;
-            case 'N':
-                y4=14;
-            break;
-            case 'O':
-                y4=15;
-            break;
-            case 'P':
-                y4=16;
-            break;
-            case 'Q':
-                y4=17;
-            break;
-            case 'R':
-                y4=18;
-            break;
-            case 'S':
-                y4=19;
-            break;
-            case 'T':
-                y4=20;
-            break;
-            case 'U':
-                y4=21;
-            break;
-            case 'V':
-                y4=22;
-            break;
-            case 'W':
-                y4=23;
-            break;
-            case 'X':
-                y4=24;
-            break;
-            case 'Y':
-                y4=25;
-            break;
-            case 'Z':
-                y4=26;
-            break;
-        }
+    }
+    switch(y2){
+        case 'A':
+            y4=1;
+        break;
+        case 'B':
+            y4=2;
+        break;
+        case 'C':
+            y4=3;
+        break;
+        case 'D':
+            y4=4;
+        break;
+        case 'E':
+            y4=5;
+        break;
+        case 'F':
+            y4=6;
+        break;
+        case 'G':
+            y4=7;
+        break;
+        case 'H':
+            y4=8;
+        break;
+        case 'I':
+            y4=9;
+        break;
+        case 'J':
+            y4=10;
+        break;
+        case 'K':
+            y4=11;
+        break;
+        case 'L':
+            y4=12;
+        break;
+        case 'M':
+            y4=13;
+        break;
+        case 'N':
+            y4=14;
+        break;
+        case 'O':
+            y4=15;
+        break;
+        case 'P':
+            y4=16;
+        break;
+        case 'Q':
+            y4=17;
+        break;
+        case 'R':
+            y4=18;
+        break;
+        case 'S':
+            y4=19;
+        break;
+        case 'T':
+            y4=20;
+        break;
+        case 'U':
+            y4=21;
+        break;
+        case 'V':
+            y4=22;
+        break;
+        case 'W':
+            y4=23;
+        break;
+        case 'X':
+            y4=24;
+        break;
+        case 'Y':
+            y4=25;
+        break;
+        case 'Z':
+            y4=26;
+        break;
+    }
     //Echange des cases
     char temp = grid[x1-1][y3-1];
     grid[x1-1][y3-1] = grid[x2-1][y4-1];
@@ -319,6 +322,7 @@ void moveLetter(char grid[][100], int GRID_SIZE) {
         printf("\n");
     }
 }
+
 
 int main() {
     int GRID_SIZE;
