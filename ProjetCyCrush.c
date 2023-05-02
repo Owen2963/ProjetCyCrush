@@ -3,7 +3,7 @@
 #include <time.h>
 char generateGrid(char grid[][26], int GRID_SIZE, int GRID_LETTERS);
 void gridverifying(char grid[][26], int GRID_SIZE, int i, int j);
-char gridverifier(char grid[][26], int GRID_SIZE);
+int gridverifier(char grid[][26], int GRID_SIZE);
 //Définition des fonctions pour éviter des problèmes d'appels
 char generateGrid(char grid[][26], int GRID_SIZE, int GRID_LETTERS) {
     srand(time(NULL));
@@ -76,25 +76,40 @@ void gridverifying(char grid[][26], int GRID_SIZE, int i, int j){
 }
 
 
-char gridverifier(char grid[][26], int GRID_SIZE){
+int gridverifier(char grid[][26], int GRID_SIZE){
+char del;
     for (int i = 0; i < GRID_SIZE; i++) {
         for (int j = 0; j < GRID_SIZE; j++) {
-            if(grid[i][j]==grid[i+1][j]&&grid[i+1][j]==grid[i+2][j]){//3 lettres alignés verticalement
-                return gridverifier(grid,GRID_SIZE);
+            if(grid[i][j]==grid[i+1][j]&&grid[i+1][j]==grid[i+2][j]){//vérifie et élimine 3 lettres alignés verticalement
+            grid[i][j]=del;
+            grid[i+1][j]=del;
+            grid[i+2][j]=del;
+                return 0;
             }
-            else if(grid[i][j]==grid[i][j+1]&&grid[i][j+1]==grid[i][j+2]){//3 lettres alignés horizontalement
-                return gridverifier(grid,GRID_SIZE);
+            else if(grid[i][j]==grid[i][j+1]&&grid[i][j+1]==grid[i][j+2]){//vérifie et élimine 3 lettres alignés horizontalement
+            grid[i][j]=del;
+            grid[i][j+1]=del;
+            grid[i][j+2]=del;
+                return 0;
             }
-            else if(grid[i][j]==grid[i+1][j+1]&&grid[i+1][j+1]==grid[i+2][j+2]){//3 lettres alignés en bas à gauche vers en haut à droite
-                return gridverifier(grid,GRID_SIZE);
+            else if(grid[i][j]==grid[i+1][j+1]&&grid[i+1][j+1]==grid[i+2][j+2]){//vérifie et élimine 3 lettres alignés en bas à gauche vers en haut à droite
+            grid[i][j]=del;
+            grid[i+1][j+1]=del;
+            grid[i+2][j+2]=del;
+                return 0;
             }
-            else if(grid[i][j]==grid[i+1][j-1]&&grid[i+1][j-1]==grid[i+2][j-2]){//3 lettres alignés en bas à droite vers en haut à gauche
-                return gridverifier(grid,GRID_SIZE);
+            else if(grid[i][j]==grid[i+1][j-1]&&grid[i+1][j-1]==grid[i+2][j-2]){//vérifie et élimine 3 lettres alignés en bas à droite vers en haut à gauche
+            grid[i][j]=del;
+            grid[i+1][j-1]=del;
+            grid[i+2][j-2]=del;
+                return 0;
             }
+            else{
+            return 1;
             }
-        }
-    }
-
+}
+}
+}
 
 void moveLetter(char grid[][26], int GRID_SIZE, int GRID_LETTERS) {
     int x1, x2, y3, y4;
@@ -279,9 +294,9 @@ void moveLetter(char grid[][26], int GRID_SIZE, int GRID_LETTERS) {
         break;
     }
     //Echange des cases
-    char temp = grid[x1-1][y1-1];
-    grid[x1-1][y1-1] = grid[x2-1][y2-1];
-    grid[x2-1][y2-1] = temp;
+    char temp = grid[x1-1][y3-1];
+    grid[x1-1][y3-1] = grid[x2-1][y4-1];
+    grid[x2-1][y4-1] = temp;
     printf("\n");
     printf("   ");
     for (int i = 0; i < GRID_SIZE; i++) {
@@ -303,8 +318,6 @@ void moveLetter(char grid[][26], int GRID_SIZE, int GRID_LETTERS) {
         }
         //Affichage des lignes d'itération(à gauche)
         for (int j = 0; j < GRID_SIZE; j++) {
-            grid[i][j] = 'A' + rand() % GRID_LETTERS;
-            gridverifying(grid, GRID_SIZE, i, j);
             switch(grid[i][j]){
                 case 'A':
                     printf("\033[1;31m");//rouge
@@ -332,10 +345,16 @@ void moveLetter(char grid[][26], int GRID_SIZE, int GRID_LETTERS) {
     }
 }
 
+void game(char grid[][26],int GRID_SIZE,int GRID_LETTERS){
+for(int i=0;i<5;i++){
+gridverifier(grid, GRID_SIZE);
+moveLetter(grid, GRID_SIZE, GRID_LETTERS);
+}
+}
 
 int main() {
-    int GRID_SIZE,GRID_LETTERS;
-    printf("\033[0;37m");
+    int GRID_SIZE, GRID_LETTERS;
+    printf("\033[1;37m");
     do{
     printf("Entrez la taille de la grille : ");
     scanf("%d", &GRID_SIZE);
@@ -347,5 +366,6 @@ int main() {
     char grid[GRID_SIZE][26];
     generateGrid(grid, GRID_SIZE, GRID_LETTERS);
     moveLetter(grid, GRID_SIZE, GRID_LETTERS);
+    game(grid, GRID_SIZE, GRID_LETTERS);
     return 0;
 }
