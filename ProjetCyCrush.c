@@ -347,7 +347,7 @@ int main() {
     scanf("%d", &GRID_SIZE);
     }while(GRID_SIZE<1||GRID_SIZE>26);
     do{
-    printf("Entrez le nombre de lettres que vous voulez dans la grille : ");
+    printf("Entrez le nombre de lettres que vous voulez dans la grille (entre 4 et 6) : ");
     scanf("%d", &GRID_LETTERS);
     }while(GRID_LETTERS<4||GRID_LETTERS>6);
     char grid[GRID_SIZE][26];
