@@ -4,6 +4,8 @@
 char generateGrid(char grid[][26], int GRID_SIZE, int GRID_LETTERS);
 void gridverifying(char grid[][26], int GRID_SIZE, int i, int j);
 int gridverifier(char grid[][26], int GRID_SIZE);
+
+
 //Définition des fonctions pour éviter des problèmes d'appels
 char generateGrid(char grid[][26], int GRID_SIZE, int GRID_LETTERS) {
     srand(time(NULL));
@@ -110,6 +112,7 @@ char del;
 }
 }
 }
+
 
 void moveLetter(char grid[][26], int GRID_SIZE, int GRID_LETTERS) {
     int x1, x2, y3, y4;
@@ -345,12 +348,14 @@ void moveLetter(char grid[][26], int GRID_SIZE, int GRID_LETTERS) {
     }
 }
 
+
 void game(char grid[][26],int GRID_SIZE,int GRID_LETTERS){
 for(int i=0;i<5;i++){
 gridverifier(grid, GRID_SIZE);
 moveLetter(grid, GRID_SIZE, GRID_LETTERS);
 }
 }
+
 
 int main() {
     int GRID_SIZE, GRID_LETTERS;
