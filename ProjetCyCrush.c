@@ -4,8 +4,6 @@
 char generateGrid(char grid[][26], int GRID_SIZE, int GRID_LETTERS);
 void gridverifying(char grid[][26], int GRID_SIZE, int i, int j);
 int gridverifier(char grid[][26], int GRID_SIZE);
-
-
 //Définition des fonctions pour éviter des problèmes d'appels
 char generateGrid(char grid[][26], int GRID_SIZE, int GRID_LETTERS) {
     srand(time(NULL));
@@ -79,40 +77,39 @@ void gridverifying(char grid[][26], int GRID_SIZE, int i, int j){
 
 
 int gridverifier(char grid[][26], int GRID_SIZE){
-char del;
+	char del;
     for (int i = 0; i < GRID_SIZE; i++) {
         for (int j = 0; j < GRID_SIZE; j++) {
             if(grid[i][j]==grid[i+1][j]&&grid[i+1][j]==grid[i+2][j]){//vérifie et élimine 3 lettres alignés verticalement
-            grid[i][j]=del;
-            grid[i+1][j]=del;
-            grid[i+2][j]=del;
+            	grid[i][j]=del;
+            	grid[i+1][j]=del;
+            	grid[i+2][j]=del;
                 return 0;
             }
             else if(grid[i][j]==grid[i][j+1]&&grid[i][j+1]==grid[i][j+2]){//vérifie et élimine 3 lettres alignés horizontalement
-            grid[i][j]=del;
-            grid[i][j+1]=del;
-            grid[i][j+2]=del;
+            	grid[i][j]=del;
+            	grid[i][j+1]=del;
+            	grid[i][j+2]=del;
                 return 0;
             }
             else if(grid[i][j]==grid[i+1][j+1]&&grid[i+1][j+1]==grid[i+2][j+2]){//vérifie et élimine 3 lettres alignés en bas à gauche vers en haut à droite
-            grid[i][j]=del;
-            grid[i+1][j+1]=del;
-            grid[i+2][j+2]=del;
+            	grid[i][j]=del;
+            	grid[i+1][j+1]=del;
+            	grid[i+2][j+2]=del;
                 return 0;
             }
             else if(grid[i][j]==grid[i+1][j-1]&&grid[i+1][j-1]==grid[i+2][j-2]){//vérifie et élimine 3 lettres alignés en bas à droite vers en haut à gauche
-            grid[i][j]=del;
-            grid[i+1][j-1]=del;
-            grid[i+2][j-2]=del;
+            	grid[i][j]=del;
+            	grid[i+1][j-1]=del;
+            	grid[i+2][j-2]=del;
                 return 0;
             }
             else{
-            return 1;
+            	return 1;
             }
+		}
+	}
 }
-}
-}
-
 
 void moveLetter(char grid[][26], int GRID_SIZE, int GRID_LETTERS) {
     int x1, x2, y3, y4;
@@ -348,14 +345,12 @@ void moveLetter(char grid[][26], int GRID_SIZE, int GRID_LETTERS) {
     }
 }
 
-
 void game(char grid[][26],int GRID_SIZE,int GRID_LETTERS){
-for(int i=0;i<5;i++){
-gridverifier(grid, GRID_SIZE);
-moveLetter(grid, GRID_SIZE, GRID_LETTERS);
+	for(int i=0;i<5;i++){
+		gridverifier(grid, GRID_SIZE);
+		moveLetter(grid, GRID_SIZE, GRID_LETTERS);
+	}
 }
-}
-
 
 int main() {
     int GRID_SIZE, GRID_LETTERS;
