@@ -4,6 +4,7 @@
 //Définition des fonctions pour éviter des problèmes d'appels
 char generateGrid(char grid[][26], int GRID_SIZE, int GRID_LETTERS);
 int grid_delete(char grid[][26], int GRID_SIZE);
+void print_grid(char grid[][26], int GRID_SIZE, int GRID_LETTERS);
 
 
 char generateGrid(char grid[][26], int GRID_SIZE, int GRID_LETTERS) {
@@ -30,10 +31,10 @@ char generateGrid(char grid[][26], int GRID_SIZE, int GRID_LETTERS) {
         for (int j = 0; j < GRID_SIZE; j++) {
             do {
                 grid[i][j] = 'A' + rand() % GRID_LETTERS;
-            } while ((j >= 2 && grid[i][j] == grid[i][j-1] && grid[i][j] == grid[i][j-2]) // 3 lettres alignées horizontalement
-                    || (i >= 2 && grid[i][j] == grid[i-1][j] && grid[i][j] == grid[i-2][j]) // 3 lettres alignées verticalement
-                    || (i >= 2 && j >= 2 && grid[i][j] == grid[i-1][j-1] && grid[i][j] == grid[i-2][j-2]) // 3 lettres alignées diagonalement (haut-gauche -> bas-droite)
-                    || (i >= 2 && j <= GRID_SIZE-3 && grid[i][j] == grid[i-1][j+1] && grid[i][j] == grid[i-2][j+2])); // 3 lettres alignées diagonalement (haut-droite -> bas-gauche)
+            } while ((grid[i][j]==grid[i][j-1] && grid[i][j]==grid[i][j-2]) // 3 lettres alignées horizontalement
+                    || (i >= 2 && grid[i][j]==grid[i-1][j] && grid[i][j]==grid[i-2][j]) // 3 lettres alignées verticalement
+                    || (i >= 2 && grid[i][j]==grid[i-1][j-1] && grid[i][j]==grid[i-2][j-2]) // 3 lettres alignées diagonalement (haut-gauche -> bas-droite)
+                    || (i >= 2 && j <= GRID_SIZE-3 && grid[i][j]==grid[i-1][j+1] && grid[i][j]==grid[i-2][j+2])); // 3 lettres alignées diagonalement (haut-droite -> bas-gauche)
             switch(grid[i][j]){
                 case 'A':
                     printf("\033[1;31m");//rouge
@@ -64,95 +65,148 @@ char generateGrid(char grid[][26], int GRID_SIZE, int GRID_LETTERS) {
 int grid_delete(char grid[][26], int GRID_SIZE){
     char del = ' '; // caractère qui représente une case vide
     int found_align = 0;
-    for (int i = 0; i < GRID_SIZE - 2; i++) {
-        for (int j = 0; j < GRID_SIZE; j++) {
-            if(grid[i][j]==grid[i+1][j]&&grid[i+1][j]==grid[i+2][j]&&grid[i+2][j]==grid[i+3][j]&&grid[i+3][j]==grid[i+4][j]){//vérifie et élimine 5 lettres alignés verticalement
-            	grid[i][j]=del;
-            	grid[i+1][j]=del;
-            	grid[i+2][j]=del;
-                grid[i+3][j]=del;
-                grid[i+4][j]=del;
-                found_align = 1;
-            }
-            else if(grid[i][j]==grid[i][j+1]&&grid[i][j+1]==grid[i][j+2]&&grid[i][j+2]==grid[i][j+3]&&grid[i][j+3]==grid[i][j+4]){//vérifie et élimine 5 lettres alignés horizontalement
-            	grid[i][j]=del;
-            	grid[i][j+1]=del;
-            	grid[i][j+2]=del;
-                grid[i][j+3]=del;
-                grid[i][j+4]=del;
-                found_align = 1;
-            }
-            else if(grid[i][j]==grid[i+1][j+1]&&grid[i+1][j+1]==grid[i+2][j+2]&&grid[i+2][j+2]==grid[i+3][j+3]&&grid[i+3][j+3]==grid[i+4][j+4]){//vérifie et élimine 5 lettres alignés en bas à gauche vers en haut à droite
-            	grid[i][j]=del;
-            	grid[i+1][j+1]=del;
-            	grid[i+2][j+2]=del;
-                grid[i+3][j+3]=del;
-                grid[i+4][j+4]=del;
-                found_align = 1;
-            }
-            else if(grid[i][j]==grid[i+1][j-1]&&grid[i+1][j-1]==grid[i+2][j-2]&&grid[i+2][j-2]==grid[i+3][j-3]&&grid[i+3][j-3]==grid[i+4][j-4]){//vérifie et élimine 5 lettres alignés en bas à droite vers en haut à gauche
-            	grid[i][j]=del;
-            	grid[i+1][j-1]=del;
-            	grid[i+2][j-2]=del;
-                grid[i+3][j-3]=del;
-                grid[i+4][j-4]=del;
-                found_align = 1;
-            }
-            else if(grid[i][j]==grid[i+1][j]&&grid[i+1][j]==grid[i+2][j]&&grid[i+2][j]==grid[i+3][j]){//vérifie et élimine 4 lettres alignés verticalement
-            	grid[i][j]=del;
-            	grid[i+1][j]=del;
-            	grid[i+2][j]=del;
-                grid[i+3][j]=del;
-                found_align = 1;
-            }
-            else if(grid[i][j]==grid[i][j+1]&&grid[i][j+1]==grid[i][j+2]&&grid[i][j+2]==grid[i][j+3]){//vérifie et élimine 4 lettres alignés horizontalement
-            	grid[i][j]=del;
-            	grid[i][j+1]=del;
-            	grid[i][j+2]=del;
-                grid[i][j+3]=del;
-                found_align = 1;
-            }
-            else if(grid[i][j]==grid[i+1][j+1]&&grid[i+1][j+1]==grid[i+2][j+2]&&grid[i+2][j+2]==grid[i+3][j+3]){//vérifie et élimine 4 lettres alignés en bas à gauche vers en haut à droite
-            	grid[i][j]=del;
-            	grid[i+1][j+1]=del;
-            	grid[i+2][j+2]=del;
-                grid[i+3][j+3]=del;
-                found_align = 1;
-            }
-            else if(grid[i][j]==grid[i+1][j-1]&&grid[i+1][j-1]==grid[i+2][j-2]&&grid[i+2][j-2]==grid[i+3][j-3]){//vérifie et élimine 4 lettres alignés en bas à droite vers en haut à gauche
-            	grid[i][j]=del;
-            	grid[i+1][j-1]=del;
-            	grid[i+2][j-2]=del;
-                grid[i+3][j-3]=del;
-                found_align = 1;
-            }
-            else if(grid[i][j]==grid[i+1][j]&&grid[i+1][j]==grid[i+2][j]){//vérifie et élimine 3 lettres alignés verticalement
-            	grid[i][j]=del;
-            	grid[i+1][j]=del;
-            	grid[i+2][j]=del;
-                found_align = 1;
-            }
-            else if(grid[i][j]==grid[i][j+1]&&grid[i][j+1]==grid[i][j+2]){//vérifie et élimine 3 lettres alignés horizontalement
-            	grid[i][j]=del;
-            	grid[i][j+1]=del;
-            	grid[i][j+2]=del;
-                found_align = 1;
-            }
-            else if(grid[i][j]==grid[i+1][j+1]&&grid[i+1][j+1]==grid[i+2][j+2]){//vérifie et élimine 3 lettres alignés en bas à gauche vers en haut à droite
-            	grid[i][j]=del;
-            	grid[i+1][j+1]=del;
-            	grid[i+2][j+2]=del;
-                found_align = 1;
-            }
-            else if(grid[i][j]==grid[i+1][j-1]&&grid[i+1][j-1]==grid[i+2][j-2]){//vérifie et élimine 3 lettres alignés en bas à droite vers en haut à gauche
-            	grid[i][j]=del;
-            	grid[i+1][j-1]=del;
-            	grid[i+2][j-2]=del;
-                found_align = 1;
+    for(int h = 0; h < 3; h++){
+        for (int i = 0; i < GRID_SIZE - 2; i++) {
+            for (int j = 0; j < GRID_SIZE; j++) {
+                if(grid[i][j]==grid[i+1][j] && grid[i+1][j]==grid[i+2][j] && grid[i+2][j]==grid[i+3][j] && grid[i+3][j]==grid[i+4][j]){//vérifie et élimine 5 lettres alignés verticalement
+                    grid[i][j]=del;
+                    grid[i+1][j]=del;
+                    grid[i+2][j]=del;
+                    grid[i+3][j]=del;
+                    grid[i+4][j]=del;
+                    found_align = 1;
+                }
+                else if(grid[i][j]==grid[i][j+1] && grid[i][j+1]==grid[i][j+2] && grid[i][j+2]==grid[i][j+3] && grid[i][j+3]==grid[i][j+4]){//vérifie et élimine 5 lettres alignés horizontalement
+                    grid[i][j]=del;
+                    grid[i][j+1]=del;
+                    grid[i][j+2]=del;
+                    grid[i][j+3]=del;
+                    grid[i][j+4]=del;
+                    found_align = 1;
+                }
+                else if(grid[i][j]==grid[i+1][j+1] && grid[i+1][j+1]==grid[i+2][j+2] && grid[i+2][j+2]==grid[i+3][j+3] && grid[i+3][j+3]==grid[i+4][j+4]){//vérifie et élimine 5 lettres alignés en bas à gauche vers en haut à droite
+                    grid[i][j]=del;
+                    grid[i+1][j+1]=del;
+                    grid[i+2][j+2]=del;
+                    grid[i+3][j+3]=del;
+                    grid[i+4][j+4]=del;
+                    found_align = 1;
+                }
+                else if(grid[i][j]==grid[i+1][j-1] && grid[i+1][j-1]==grid[i+2][j-2] && grid[i+2][j-2]==grid[i+3][j-3] && grid[i+3][j-3]==grid[i+4][j-4]){//vérifie et élimine 5 lettres alignés en bas à droite vers en haut à gauche
+                    grid[i][j]=del;
+                    grid[i+1][j-1]=del;
+                    grid[i+2][j-2]=del;
+                    grid[i+3][j-3]=del;
+                    grid[i+4][j-4]=del;
+                    found_align = 1;
+                }
+                else if(grid[i][j]==grid[i+1][j] && grid[i+1][j]==grid[i+2][j] && grid[i+2][j]==grid[i+3][j]){//vérifie et élimine 4 lettres alignés verticalement
+                    grid[i][j]=del;
+                    grid[i+1][j]=del;
+                    grid[i+2][j]=del;
+                    grid[i+3][j]=del;
+                    found_align = 1;
+                }
+                else if(grid[i][j]==grid[i][j+1] && grid[i][j+1]==grid[i][j+2] && grid[i][j+2]==grid[i][j+3]){//vérifie et élimine 4 lettres alignés horizontalement
+                    grid[i][j]=del;
+                    grid[i][j+1]=del;
+                    grid[i][j+2]=del;
+                    grid[i][j+3]=del;
+                    found_align = 1;
+                }
+                else if(grid[i][j]==grid[i+1][j+1] && grid[i+1][j+1]==grid[i+2][j+2] && grid[i+2][j+2]==grid[i+3][j+3]){//vérifie et élimine 4 lettres alignés en bas à gauche vers en haut à droite
+                    grid[i][j]=del;
+                    grid[i+1][j+1]=del;
+                    grid[i+2][j+2]=del;
+                    grid[i+3][j+3]=del;
+                    found_align = 1;
+                }
+                else if(grid[i][j]==grid[i+1][j-1] && grid[i+1][j-1]==grid[i+2][j-2] && grid[i+2][j-2]==grid[i+3][j-3]){//vérifie et élimine 4 lettres alignés en bas à droite vers en haut à gauche
+                    grid[i][j]=del;
+                    grid[i+1][j-1]=del;
+                    grid[i+2][j-2]=del;
+                    grid[i+3][j-3]=del;
+                    found_align = 1;
+                }
+                else if(grid[i][j]==grid[i+1][j] && grid[i+1][j]==grid[i+2][j]){//vérifie et élimine 3 lettres alignés verticalement
+                    grid[i][j]=del;
+                    grid[i+1][j]=del;
+                    grid[i+2][j]=del;
+                    found_align = 1;
+                }
+                else if(grid[i][j]==grid[i][j+1] && grid[i][j+1]==grid[i][j+2]){//vérifie et élimine 3 lettres alignés horizontalement
+                    grid[i][j]=del;
+                    grid[i][j+1]=del;
+                    grid[i][j+2]=del;
+                    found_align = 1;
+                }
+                else if(grid[i][j]==grid[i+1][j+1] && grid[i+1][j+1]==grid[i+2][j+2]){//vérifie et élimine 3 lettres alignés en bas à gauche vers en haut à droite
+                    grid[i][j]=del;
+                    grid[i+1][j+1]=del;
+                    grid[i+2][j+2]=del;
+                    found_align = 1;
+                }
+                else if(grid[i][j]==grid[i+1][j-1] && grid[i+1][j-1]==grid[i+2][j-2]){//vérifie et élimine 3 lettres alignés en bas à droite vers en haut à gauche
+                    grid[i][j]=del;
+                    grid[i+1][j-1]=del;
+                    grid[i+2][j-2]=del;
+                    found_align = 1;
+                }
             }
         }
     }
     return found_align; //Si TRUE,on suprrime
+}
+
+
+
+void print_grid(char grid[][26], int GRID_SIZE, int GRID_LETTERS){
+    printf("\n");
+    printf("   ");
+    for (int i = 0; i < GRID_SIZE; i++) {
+        printf("%c ", 'A' + i);
+    }
+    printf("\n");
+    printf("   ");
+    for (int i = 0; i < GRID_SIZE; i++) {
+        printf("_ ");
+    }
+    printf("\n");
+    //Affichage des colonnes d'itération (en haut)
+    for (int i = 0; i < GRID_SIZE; i++) {
+        if(i<9){
+            printf("%d |",i+1);
+        }
+        else{
+            printf("%d|",i+1);
+        }
+        //Affichage des lignes d'itération(à gauche)
+        for (int j = 0; j < GRID_SIZE; j++) {
+            switch(grid[i][j]){
+                case 'A':
+                    printf("\033[1;31m");//rouge
+                break;
+                case 'B':
+                    printf("\033[1;32m");//vert
+                break;
+                case 'C':
+                    printf("\033[1;33m");//jaune
+                break;
+                case 'D':
+                    printf("\033[1;34m");//bleu
+                break;
+                case 'E':
+                    printf("\033[1;36m");//cyan
+                break;
+                case 'F':
+                    printf("\033[1;35m");//violet
+                break;
+            }
+            printf("%c ", grid[i][j]);//Affichage du tableau entier
+        }
+        printf("\033[1;37m");
+        printf("\n");
+    }
 }
 
 
@@ -174,7 +228,7 @@ void moveLetter(char grid[][26], int GRID_SIZE, int GRID_LETTERS) {
         return moveLetter(grid, GRID_SIZE,GRID_LETTERS);
     }
     //On vérifie que la case de destination n'est pas à une distance supérieure à une unité horizontalement ou verticalement de la case de départ et n'est pas la case de départ
-    else if ((abs(x2 - x1) > 1) || (abs(y2 - y1) > 1) || (x1 == x2 && y1 == y2)) {
+    else if ((abs(x2 - x1) > 1) || (abs(y2 - y1) > 1) || (x1==x2 && y1==y2)) {
         printf("Coordonnees invalides, les cases ne sont pas cote a cote. Entrez de nouvelles coordonnees.\n");
         return moveLetter(grid, GRID_SIZE,GRID_LETTERS);
     }
@@ -343,85 +397,275 @@ void moveLetter(char grid[][26], int GRID_SIZE, int GRID_LETTERS) {
     grid[x1-1][y3-1] = grid[x2-1][y4-1];
     grid[x2-1][y4-1] = temp;
     grid_delete(grid, GRID_SIZE);
-    printf("\n");
-    printf("   ");
-    for (int i = 0; i < GRID_SIZE; i++) {
-        printf("%c ", 'A' + i);
-    }
-    printf("\n");
-    printf("   ");
-    for (int i = 0; i < GRID_SIZE; i++) {
-        printf("_ ");
-    }
-    printf("\n");
-    //Affichage des colonnes d'itération (en haut)
-    for (int i = 0; i < GRID_SIZE; i++) {
-        if(i<9){
-            printf("%d |",i+1);
-        }
-        else{
-            printf("%d|",i+1);
-        }
-        //Affichage des lignes d'itération(à gauche)
-        for (int j = 0; j < GRID_SIZE; j++) {
-            switch(grid[i][j]){
-                case 'A':
-                    printf("\033[1;31m");//rouge
-                break;
-                case 'B':
-                    printf("\033[1;32m");//vert
-                break;
-                case 'C':
-                    printf("\033[1;33m");//jaune
-                break;
-                case 'D':
-                    printf("\033[1;34m");//bleu
-                break;
-                case 'E':
-                    printf("\033[1;36m");//cyan
-                break;
-                case 'F':
-                    printf("\033[1;35m");//violet
-                break;
-            }
-            printf("%c ", grid[i][j]);//Affichage du tableau entier
-        }
-        printf("\033[1;37m");
-        printf("\n");
-    }
+    print_grid(grid, GRID_SIZE, GRID_LETTERS);
 }
 
 
-void game(char grid[][26],int GRID_SIZE,int GRID_LETTERS){
-    int p=0;
+void grid_filler(char grid[][26], int GRID_SIZE, int GRID_LETTERS){
+    char del = ' ';
+    for (int j = 0; j < GRID_SIZE; j++) {
+        for (int h = 0; h < GRID_SIZE; h++) {     
+            if(grid[j][h]==del  && grid[j][h]==grid[j][h+1] && grid[j][h]==grid[j][h+2] && grid[j][h]==grid[j][h+3]&& grid[j][h]==grid[j][h+4]){// remplissage de 5 lettres alignées horizontalement
+                for(int i = j; i > 0; i--){
+                    grid[i][h] = grid[i-1][h];
+                    grid[i][h+1] = grid[i-1][h+1];
+                    grid[i][h+2] = grid[i-1][h+2];
+                    grid[i][h+3] = grid[i-1][h+3];
+                    grid[i][h+4] = grid[i-1][h+4];
+                }
+                for(int k=h; k>h+5 ;k++){
+                    do {
+                        grid[0][k] = 'A' + rand() % GRID_LETTERS;
+                    } while ((grid[0][k]==grid[0][k-1] && grid[0][k]==grid[0][k-2]) // 3 lettres alignées horizontalement
+                            || (grid[0][k]==grid[1][k] && grid[0][k]==grid[2][k]) // 3 lettres alignées verticalement
+                            || (grid[0][k]==grid[1][k+1] && grid[0][k]==grid[2][k+2]) // 3 lettres alignées diagonalement (haut-gauche -> bas-droite)
+                            || (grid[0][k]==grid[1][k-1] && grid[0][k]==grid[2][k-2])); // 3 lettres alignées diagonalement (haut-droite -> bas-gauche)        
+                }
+            } 
+            if(grid[j][h]==del && grid[j][h]==grid[j+1][h] && grid[j][h]==grid[j+2][h] && grid[j][h]==grid[j+3][h] && grid[j][h]==grid[j+4][h]){// remplissage de 5 lettres alignées verticalement
+                for(int i = j; i > 0; i-=5){
+                    grid[i][h] = grid[i-5][h];
+                    grid[i+1][h] = grid[i-4][h];
+                    grid[i+2][h] = grid[i-3][h];
+                    grid[i+3][h] = grid[i-2][h];
+                    grid[i+4][h] = grid[i-1][h];
+                }
+                for(int k=0; k<6 ;k++){
+                    do {
+                        grid[k][h] = 'A' + rand() % GRID_LETTERS;
+                    } while ((grid[k][h]==grid[k][h-1] && grid[k][h]==grid[k][h-2]) // 3 lettres alignées horizontalement
+                        || (grid[k][h]==grid[k-1][h] && grid[k][h]==grid[k-2][h]) // 3 lettres alignées verticalement
+                        || (grid[k][h]==grid[k+1][h+1] && grid[k][h]==grid[k+2][h+2]) // 3 lettres alignées diagonalement (haut-gauche -> bas-droite)
+                            || (grid[k][h]==grid[k+1][h-1] && grid[k][h]==grid[k+2][h-2])); // 3 lettres alignées diagonalement (haut-droite -> bas-gauche)
+                }
+            }
+            if(grid[j][h]==grid[j+1][h+1] && grid[j][h]==grid[j+2][h+2] && grid[j][h]==grid[j+3][h+3] && grid[j][h]==grid[j+4][h+4]){// remplissage de 5 lettres alignées diagonalement (haut-gauche -> bas-droite)
+                for(int i = j; i > -4; i--){
+                    if(i>0){
+                    grid[i][h] = grid[i-1][h];
+                    }
+                    if(i>-1){
+                    grid[i+1][h+1] = grid[i][h+1];
+                    }
+                    if(i>-2){
+                    grid[i+2][h+2] = grid[i+1][h+2];
+                    }
+                    if(i>-3){
+                    grid[i+3][h+3] = grid[i+2][h+3];
+                    }
+                    grid[i+4][h+4] = grid[i+3][h+4];
+                }
+                for(int k=h; k<h+5 ;k++){
+                    do {
+                        grid[0][k] = 'A' + rand() % GRID_LETTERS;
+                    } while ((grid[0][k]==grid[0][k-1] && grid[0][k]==grid[0][k-2]) // 3 lettres alignées horizontalement
+                            || (grid[0][k]==grid[1][k] && grid[0][k]==grid[2][k]) // 3 lettres alignées verticalement
+                            || (grid[0][k]==grid[1][k+1] && grid[0][k]==grid[2][k+2]) // 3 lettres alignées diagonalement (haut-gauche -> bas-droite)
+                            || (grid[0][k]==grid[1][k-1] && grid[0][k]==grid[2][k-2])); // 3 lettres alignées diagonalement (haut-droite -> bas-gauche)     
+                }
+            }
+            if(grid[j][h]==grid[j+1][h-1] && grid[j][h]==grid[j+2][h-2] && grid[j][h]==grid[j+3][h-3] && grid[j][h]==grid[j+4][h-4]){// remplissage de 5 lettres alignées diagonalement (haut-droite -> bas-gauche)
+                for(int i = j; i > -4; i--){
+                    if(i>0){
+                    grid[i][h] = grid[i-1][h];
+                    }
+                    if(i>-1){
+                    grid[i+1][h-1] = grid[i][h-1];
+                    }
+                    if(i>-2){
+                    grid[i+2][h-2] = grid[i+1][h-2];
+                    }
+                    if(i>-3){
+                    grid[i+3][h-3] = grid[i+2][h-3];
+                    }
+                    grid[i+4][h-4] = grid[i+3][h-4];
+                }
+                for(int k=h-4; k<h+1 ;k--){
+                    do {
+                        grid[0][k] = 'A' + rand() % GRID_LETTERS;
+                    } while ((grid[0][k]==grid[0][k-1] && grid[0][k]==grid[0][k-2]) // 3 lettres alignées horizontalement
+                            || (grid[0][k]==grid[1][k] && grid[0][k]==grid[2][k]) // 3 lettres alignées verticalement
+                            || (grid[0][k]==grid[1][k+1] && grid[0][k]==grid[2][k+2]) // 3 lettres alignées diagonalement (haut-gauche -> bas-droite)
+                            || (grid[0][k]==grid[1][k-1] && grid[0][k]==grid[2][k-2])); // 3 lettres alignées diagonalement (haut-droite -> bas-gauche)    
+                }
+            }
+            if(grid[j][h]==del  && grid[j][h]==grid[j][h+1] && grid[j][h]==grid[j][h+2] && grid[j][h]==grid[j][h+3]){// remplissage de 4 lettres alignées horizontalement
+                for(int i = j; i > 0; i--){
+                    grid[i][h] = grid[i-1][h];
+                    grid[i][h+1] = grid[i-1][h+1];
+                    grid[i][h+2] = grid[i-1][h+2];
+                    grid[i][h+3] = grid[i-1][h+3];
+                }
+                for(int k=h; k>h+4 ;k++){
+                    do {
+                        grid[0][k] = 'A' + rand() % GRID_LETTERS;
+                    } while ((grid[0][k]==grid[0][k-1] && grid[0][k]==grid[0][k-2]) // 3 lettres alignées horizontalement
+                            || (grid[0][k]==grid[1][k] && grid[0][k]==grid[2][k]) // 3 lettres alignées verticalement
+                            || (grid[0][k]==grid[1][k+1] && grid[0][k]==grid[2][k+2]) // 3 lettres alignées diagonalement (haut-gauche -> bas-droite)
+                            || (grid[0][k]==grid[1][k-1] && grid[0][k]==grid[2][k-2])); // 3 lettres alignées diagonalement (haut-droite -> bas-gauche)        
+                }
+            } 
+            if(grid[j][h]==del && grid[j][h]==grid[j+1][h] && grid[j][h]==grid[j+2][h] && grid[j][h]==grid[j+3][h]){// remplissage de 4 lettres alignées verticalement
+                for(int i = j; i > 0; i-=4){
+                    grid[i][h] = grid[i-4][h];
+                    grid[i+1][h] = grid[i-3][h];
+                    grid[i+2][h] = grid[i-2][h];
+                    grid[i+3][h] = grid[i-1][h];
+                }
+                for(int k=0; k<5 ;k++){
+                    do {
+                        grid[k][h] = 'A' + rand() % GRID_LETTERS;
+                    } while ((grid[k][h]==grid[k][h-1] && grid[k][h]==grid[k][h-2]) // 3 lettres alignées horizontalement
+                            || (grid[k][h]==grid[k-1][h] && grid[k][h]==grid[k-2][h]) // 3 lettres alignées verticalement
+                            || (grid[k][h]==grid[k+1][h+1] && grid[k][h]==grid[k+2][h+2]) // 3 lettres alignées diagonalement (haut-gauche -> bas-droite)
+                            || (grid[k][h]==grid[k+1][h-1] && grid[k][h]==grid[k+2][h-2])); // 3 lettres alignées diagonalement (haut-droite -> bas-gauche)
+                }
+            }
+            if(grid[j][h]==grid[j+1][h+1] && grid[j][h]==grid[j+2][h+2] && grid[j][h]==grid[j+3][h+3]){// remplissage de 4 lettres alignées diagonalement (haut-gauche -> bas-droite)
+                for(int i = j; i > -3; i--){
+                    if(i>0){
+                    grid[i][h] = grid[i-1][h];
+                    }
+                    if(i>-1){
+                    grid[i+1][h+1] = grid[i][h+1];
+                    }
+                    if(i>-2){
+                    grid[i+2][h+2] = grid[i+1][h+2];
+                    }
+                    grid[i+3][h+3] = grid[i+2][h+3];
+                }
+                for(int k=h; k<h+4 ;k++){
+                    do {
+                        grid[0][k] = 'A' + rand() % GRID_LETTERS;
+                    } while ((grid[0][k]==grid[0][k-1] && grid[0][k]==grid[0][k-2]) // 3 lettres alignées horizontalement
+                            || (grid[0][k]==grid[1][k] && grid[0][k]==grid[2][k]) // 3 lettres alignées verticalement
+                            || (grid[0][k]==grid[1][k+1] && grid[0][k]==grid[2][k+2]) // 3 lettres alignées diagonalement (haut-gauche -> bas-droite)
+                            || (grid[0][k]==grid[1][k-1] && grid[0][k]==grid[2][k-2])); // 3 lettres alignées diagonalement (haut-droite -> bas-gauche)    
+                }
+            }
+            if(grid[j][h]==grid[j+1][h-1] && grid[j][h]==grid[j+2][h-2] && grid[j][h]==grid[j+3][h-3]){// remplissage de 4 lettres alignées diagonalement (haut-droite -> bas-gauche)
+                for(int i = j; i > -3; i--){
+                    if(i>0){
+                    grid[i][h] = grid[i-1][h];
+                    }
+                    if(i>-1){
+                    grid[i+1][h+1] = grid[i][h-1];
+                    }
+                    if(i>-2){
+                    grid[i+2][h+2] = grid[i+1][h-2];
+                    }
+                    grid[i+3][h+3] = grid[i+2][h-3];
+                }
+                for(int k=h-3; k<h+1 ;k++){
+                    do {
+                        grid[0][k] = 'A' + rand() % GRID_LETTERS;
+                    } while ((grid[0][k]==grid[0][k-1] && grid[0][k]==grid[0][k-2]) // 3 lettres alignées horizontalement
+                            || (grid[0][k]==grid[1][k] && grid[0][k]==grid[2][k]) // 3 lettres alignées verticalement
+                            || (grid[0][k]==grid[1][k+1] && grid[0][k]==grid[2][k+2]) // 3 lettres alignées diagonalement (haut-gauche -> bas-droite)
+                            || (grid[0][k]==grid[1][k-1] && grid[0][k]==grid[2][k-2])); // 3 lettres alignées diagonalement (haut-droite -> bas-gauche)    
+                }
+            }
+            if(grid[j][h]==del  && grid[j][h]==grid[j][h+1] && grid[j][h]==grid[j][h+2]){// remplissage de 3 lettres alignées horizontalement
+                for(int i = j; i > 0; i--){
+                    grid[i][h] = grid[i-1][h];
+                    grid[i][h+1] = grid[i-1][h+1];
+                    grid[i][h+2] = grid[i-1][h+2];
+                }
+                for(int k=h; k>h+3 ;k++){
+                    do {
+                        grid[0][k] = 'A' + rand() % GRID_LETTERS;
+                    } while ((grid[0][k]==grid[0][k-1] && grid[0][k]==grid[0][k-2]) // 3 lettres alignées horizontalement
+                            || (grid[0][k]==grid[1][k] && grid[0][k]==grid[2][k]) // 3 lettres alignées verticalement
+                            || (grid[0][k]==grid[1][k+1] && grid[0][k]==grid[2][k+2]) // 3 lettres alignées diagonalement (haut-gauche -> bas-droite)
+                            || (grid[0][k]==grid[1][k-1] && grid[0][k]==grid[2][k-2])); // 3 lettres alignées diagonalement (haut-droite -> bas-gauche)        
+                }
+            } 
+            if(grid[j][h]==del && grid[j][h]==grid[j+1][h] && grid[j][h]==grid[j+2][h]){// remplissage de 3 lettres alignées verticalement
+                for(int i = j; i > 0; i-=3){
+                    grid[i][h] = grid[i-3][h];
+                    grid[i+1][h] = grid[i-2][h];
+                    grid[i+2][h] = grid[i-1][h];
+                }
+                for(int k=0; k<3 ;k++){
+                    do {
+                        grid[k][h] = 'A' + rand() % GRID_LETTERS;
+                    } while ((grid[k][h]==grid[k][h-1] && grid[k][h]==grid[k][h-2]) // 3 lettres alignées horizontalement
+                            || (grid[k][h]==grid[k-1][h] && grid[k][h]==grid[k-2][h]) // 3 lettres alignées verticalement
+                            || (grid[k][h]==grid[k+1][h+1] && grid[k][h]==grid[k+2][h+2]) // 3 lettres alignées diagonalement (haut-gauche -> bas-droite)
+                            || (grid[k][h]==grid[k+1][h-1] && grid[k][h]==grid[k+2][h-2])); // 3 lettres alignées diagonalement (haut-droite -> bas-gauche)
+                }
+            }
+            if(grid[j][h]==grid[j+1][h+1] && grid[j][h]==grid[j+2][h+2] && grid[j][h]==grid[j+3][h+3]){// remplissage de 3 lettres alignées diagonalement (haut-gauche -> bas-droite)
+                for(int i = j; i > -2; i--){
+                    if(i>0){
+                    grid[i][h] = grid[i-1][h];
+                    }
+                    if(i>-1){
+                    grid[i+1][h+1] = grid[i][h+1];
+                    }
+                    grid[i+2][h+2] = grid[i+1][h+2];
+                }
+                for(int k=h; k<h+3 ;k++){
+                    do {
+                        grid[0][k] = 'A' + rand() % GRID_LETTERS;
+                    } while ((grid[0][k]==grid[0][k-1] && grid[0][k]==grid[0][k-2]) // 3 lettres alignées horizontalement
+                            || (grid[0][k]==grid[1][k] && grid[0][k]==grid[2][k]) // 3 lettres alignées verticalement
+                            || (grid[0][k]==grid[1][k+1] && grid[0][k]==grid[2][k+2]) // 3 lettres alignées diagonalement (haut-gauche -> bas-droite)
+                            || (grid[0][k]==grid[1][k-1] && grid[0][k]==grid[2][k-2])); // 3 lettres alignées diagonalement (haut-droite -> bas-gauche)    
+                }
+            }
+            if(grid[j][h]==grid[j+1][h-1] && grid[j][h]==grid[j+2][h-2] && grid[j][h]==grid[j+3][h-3]){// remplissage de 3 lettres alignées diagonalement (haut-droite -> bas-gauche)
+                for(int i = j; i > -2; i--){
+                    if(i>0){
+                    grid[i][h] = grid[i-1][h];
+                    }
+                    if(i>-1){
+                    grid[i+1][h-1] = grid[i][h-1];
+                    }
+                    grid[i+2][h-2] = grid[i+1][h-2];
+                }
+                for(int k=h-3; k<h+1 ;k++){
+                    do {
+                        grid[0][k] = 'A' + rand() % GRID_LETTERS;
+                    } while ((grid[0][k]==grid[0][k-1] && grid[0][k]==grid[0][k-2]) // 3 lettres alignées horizontalement
+                            || (grid[0][k]==grid[1][k] && grid[0][k]==grid[2][k]) // 3 lettres alignées verticalement
+                            || (grid[0][k]==grid[1][k+1] && grid[0][k]==grid[2][k+2]) // 3 lettres alignées diagonalement (haut-gauche -> bas-droite)
+                            || (grid[0][k]==grid[1][k-1] && grid[0][k]==grid[2][k-2])); // 3 lettres alignées diagonalement (haut-droite -> bas-gauche)      
+                }
+            }
+        }    
+    }
+}
+
+void game(char grid[][26], int GRID_SIZE, int GRID_LETTERS){
+    int p = 0;
     char del = ' ';
 	for(int i=0;i<5;i++){
         printf("Points: %d\n", p);
         moveLetter(grid, GRID_SIZE, GRID_LETTERS);
         for (int j = 0; j < GRID_SIZE; j++) {
-            for (int h = 0; h < GRID_SIZE; h++) {
-                if((j >= 2 && grid[j][h] == grid[j][h-1] && grid[j][h] == grid[j][h-2] && grid[j][h] == grid[j][h-3]&& grid[j][h] == grid[j][h-4]) // 5 lettres alignées horizontalement
-                        || (j >= 2 && grid[j][h] == grid[j-1][h] && grid[j][h] == grid[j-2][h] && grid[j][h] == grid[j-3][h] && grid[j][h] == grid[j-4][h]) // 5 lettres alignées verticalement
-                        || (j >= 2 && h >= 2 && grid[j][h] == grid[j-1][h-1] && grid[j][h] == grid[j-2][h-2] && grid[j][h] == grid[j-3][h-3] && grid[j][h] == grid[j-4][h-4]) // 5 lettres alignées diagonalement (haut-gauche -> bas-droite)
-                        || (j >= 2 && h <= GRID_SIZE-3 && grid[j][h] == grid[j-1][h+1] && grid[j][h] == grid[j-2][h+2] && grid[j][h] == grid[j-3][h+3] && grid[j][h] == grid[j-4][h+4])){// 5 lettres alignées diagonalement (haut-droite -> bas-gauche)
+            for (int h = 0; h < GRID_SIZE; h++) {     
+                if((grid[j][h]==grid[j][h+1] && grid[j][h]==grid[j][h+2] && grid[j][h]==grid[j][h+3]&& grid[j][h]==grid[j][h+4]) // 5 lettres alignées horizontalement
+                        || (grid[j][h]==grid[j+1][h] && grid[j][h]==grid[j+2][h] && grid[j][h]==grid[j+3][h] && grid[j][h]==grid[j+4][h]) // 5 lettres alignées verticalement
+                        || (grid[j][h]==grid[j+1][h+1] && grid[j][h]==grid[j+2][h+2] && grid[j][h]==grid[j+3][h+3] && grid[j][h]==grid[j+4][h+4]) // 5 lettres alignées diagonalement (haut-gauche -> bas-droite)
+                        || (grid[j][h]==grid[j+1][h-1] && grid[j][h]==grid[j+2][h-2] && grid[j][h]==grid[j+3][h-3] && grid[j][h]==grid[j+4][h-4])){// 5 lettres alignées diagonalement (haut-droite -> bas-gauche)
                         p+=150;
                 }
-                else if((j >= 2 && grid[j][h] == grid[j][h-1] && grid[j][h] == grid[j][h-2] && grid[j][h] == grid[j][h-3]) // 4 lettres alignées horizontalement
-                        || (j >= 2 && grid[j][h] == grid[j-1][h] && grid[j][h] == grid[j-2][h] && grid[j][h] == grid[j-3][h]) // 4 lettres alignées verticalement
-                        || (j >= 2 && h >= 2 && grid[j][h] == grid[j-1][h-1] && grid[j][h] == grid[j-2][h-2] && grid[j][h] == grid[j-3][h-3]) // 4 lettres alignées diagonalement (haut-gauche -> bas-droite)
-                        || (j >= 2 && h <= GRID_SIZE-3 && grid[j][h] == grid[j-1][h+1] && grid[j][h] == grid[j-2][h+2] && grid[j][h] == grid[j-3][h+3])){// 4 lettres alignées diagonalement (haut-droite -> bas-gauche)
+                else if((grid[j][h]==grid[j][h+1] && grid[j][h]==grid[j][h+2] && grid[j][h]==grid[j][h+3]) // 4 lettres alignées horizontalement
+                        || (grid[j][h]==grid[j+1][h] && grid[j][h]==grid[j+2][h] && grid[j][h]==grid[j+3][h]) // 4 lettres alignées verticalement
+                        || (grid[j][h]==grid[j+1][h+1] && grid[j][h]==grid[j+2][h+2] && grid[j][h]==grid[j+3][h+3]) // 4 lettres alignées diagonalement (haut-gauche -> bas-droite)
+                        || (grid[j][h]==grid[j+1][h-1] && grid[j][h]==grid[j+2][h-2] && grid[j][h]==grid[j+3][h-3])){// 4 lettres alignées diagonalement (haut-droite -> bas-gauche)
                         p+=100;
                 }
-                else if((j >= 2 && grid[j][h] == grid[j][h-1] && grid[j][h] == grid[j][h-2]) // 3 lettres alignées horizontalement
-                        || (j >= 2 && grid[j][h] == grid[j-1][h] && grid[j][h] == grid[j-2][h]) // 3 lettres alignées verticalement
-                        || (j >= 2 && h >= 2 && grid[j][h] == grid[j-1][h-1] && grid[j][h] == grid[j-2][h-2]) // 3 lettres alignées diagonalement (haut-gauche -> bas-droite)
-                        || (j >= 2 && h <= GRID_SIZE-3 && grid[j][h] == grid[j-1][h+1] && grid[j][h] == grid[j-2][h+2])){ // 3 lettres alignées diagonalement (haut-droite -> bas-gauche)
+                else if((grid[j][h]==grid[j][h+1] && grid[j][h]==grid[j][h+2]) // 3 lettres alignées horizontalement
+                        || (grid[j][h]==grid[j+1][h] && grid[j][h]==grid[j+2][h]) // 3 lettres alignées verticalement
+                        || (grid[j][h]==grid[j+1][h+1] && grid[j][h]==grid[j+2][h+2]) // 3 lettres alignées diagonalement (haut-gauche -> bas-droite)
+                        || (grid[j][h]==grid[j+1][h-1] && grid[j][h]==grid[j+2][h-2])){ // 3 lettres alignées diagonalement (haut-droite -> bas-gauche)
                         p+=50;
-                }
-                else if(grid[j][h]==del){
                 }
             }
         }
+        grid_filler(grid, GRID_SIZE, GRID_LETTERS);
     }
 }
 
