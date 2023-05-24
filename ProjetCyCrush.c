@@ -361,7 +361,7 @@ void moveLetter(char grid[][26], int GRID_SIZE, int GRID_LETTERS) {
     if((grid[x3][y3]==grid[x4][y4+1] && grid[x3][y3]==grid[x4][y4+2]) // vérification que le joueur aligne 3 lettres horizontalement
         || (grid[x3][y3]==grid[x4][y4-1] && grid[x3][y3]==grid[x4][y4-2]) // vérification que le joueur aligne 3 lettres horizontalement
         || (grid[x3][y3]==grid[x4][y4-1] && grid[x3][y3]==grid[x4][y4+1]) // vérification que le joueur aligne 3 lettres horizontalement
-        || (grid[x3][y3]==grid[x4+1][y4] && grid[x3][y3]==grid[x4+2][y4]) // vérification que le joueur aligne 3 lettres verticalement5
+        || (grid[x3][y3]==grid[x4+1][y4] && grid[x3][y3]==grid[x4+2][y4])
         || (grid[x3][y3]==grid[x4+1][y4] && grid[x3][y3]==grid[x4-1][y4]) // vérification que le joueur aligne 3 lettres verticalement
         || (grid[x3][y3]==grid[x4-1][y4] && grid[x3][y3]==grid[x4-2][y4]) // vérification que le joueur aligne 3 lettres verticalement
         || (grid[x3][y3]==grid[x4+1][y4+1] && grid[x3][y3]==grid[x4+2][y4+2]) // vérification que le joueur aligne 3 lettres diagonalement (haut-gauche -> bas-droite)
@@ -660,50 +660,27 @@ void game(char grid[][26], int GRID_SIZE, int GRID_LETTERS){
 
 int game_stopper(char grid[][26], int GRID_SIZE, int p){// vérification que le joueur ne peut plus aligner 3 lettres
     char joueur[30];
-    int verifier=0, t=GRID_SIZE*GRID_SIZE;
-    for(int x3=0; x3<GRID_SIZE; x3++){
-        for(int y3=0; y3<GRID_SIZE; y3++){
-            if((grid[x3][y3]!=grid[x3][y3+2] && grid[x3][y3]!=grid[x3][y3+3]) 
-        && (grid[x3][y3]!=grid[x3][y3-2] && grid[x3][y3]!=grid[x3][y3-3]) 
-        && (grid[x3][y3]!=grid[x3+1][y3+1] && grid[x3][y3]!=grid[x3+1][y3+2]) 
-        && (grid[x3][y3]!=grid[x3+1][y3-1] && grid[x3][y3]!=grid[x3+1][y3-2])
-        && (grid[x3][y3]!=grid[x3+1][y3-1] && grid[x3][y3]!=grid[x3+1][y3+1])
-        && (grid[x3][y3]!=grid[x3-1][y3+1] && grid[x3][y3]!=grid[x3-1][y3+2])
-        && (grid[x3][y3]!=grid[x3-1][y3-1] && grid[x3][y3]!=grid[x3-1][y3-2])
-        && (grid[x3][y3]!=grid[x3-1][y3-1] && grid[x3][y3]!=grid[x3-1][y3+1]) 
-        && (grid[x3][y3]!=grid[x3+2][y3] && grid[x3][y3]!=grid[x3+3][y3]) 
-        && (grid[x3][y3]!=grid[x3+1][y3+1] && grid[x3][y3]!=grid[x3+2][y3+1]) 
-        && (grid[x3][y3]!=grid[x3+1][y3-1] && grid[x3][y3]!=grid[x3+2][y3-1]) 
-        && (grid[x3][y3]!=grid[x3+1][y3-1] && grid[x3][y3]!=grid[x3-1][y3-1]) 
-        && (grid[x3][y3]!=grid[x3+1][y3+1] && grid[x3][y3]!=grid[x3-1][y3+1]) 
-        && (grid[x3][y3]!=grid[x3-2][y3] && grid[x3][y3]!=grid[x3-3][y3])
-        && (grid[x3][y3]!=grid[x3-1][y3+1] && grid[x3][y3]!=grid[x3-2][y3+1]) 
-        && (grid[x3][y3]!=grid[x3-1][y3-1] && grid[x3][y3]!=grid[x3-2][y3-1]) 
-        && (grid[x3][y3]!=grid[x3+1][y3+2] && grid[x3][y3]!=grid[x3+2][y3+3]) 
-        && (grid[x3][y3]!=grid[x3][y3+1] && grid[x3][y3]!=grid[x3+1][y3+2]) 
-        && (grid[x3][y3]!=grid[x3+2][y3+1] && grid[x3][y3]!=grid[x3+3][y3+2])
-        && (grid[x3][y3]!=grid[x3+1][y3] && grid[x3][y3]!=grid[x3+2][y3+1]) 
-        && (grid[x3][y3]!=grid[x3][y3-1] && grid[x3][y3]!=grid[x3+2][y3+1]) 
-        && (grid[x3][y3]!=grid[x3-1][y3] && grid[x3][y3]!=grid[x3+1][y3+2]) 
-        && (grid[x3][y3]!=grid[x3][y3+1] && grid[x3][y3]!=grid[x3-2][y3-1]) 
-        && (grid[x3][y3]!=grid[x3+1][y3] && grid[x3][y3]!=grid[x3-1][y3-2]) 
-        && (grid[x3][y3]!=grid[x3-1][y3-2] && grid[x3][y3]!=grid[x3][y3-1]) 
-        && (grid[x3][y3]!=grid[x3-2][y3-3] && grid[x3][y3]!=grid[x3-1][y3-2]) 
-        && (grid[x3][y3]!=grid[x3-2][y3-1] && grid[x3][y3]!=grid[x3-3][y3-2]) 
-        && (grid[x3][y3]!=grid[x3-1][y3] && grid[x3][y3]!=grid[x3-2][y3-1]) 
-        && (grid[x3][y3]!=grid[x3][y3-2] && grid[x3][y3]!=grid[x3][y3-3]) 
-        && (grid[x3][y3]!=grid[x3+1][y3-2] && grid[x3][y3]!=grid[x3+2][y3-3]) 
-        && (grid[x3][y3]!=grid[x3][y3-1] && grid[x3][y3]!=grid[x3+1][y3-2]) 
-        && (grid[x3][y3]!=grid[x3+2][y3-1] && grid[x3][y3]!=grid[x3+3][y3-2]) 
-        && (grid[x3][y3]!=grid[x3+1][y3] && grid[x3][y3]!=grid[x3+2][y3-1]) 
-        && (grid[x3][y3]!=grid[x3][y3+1] && grid[x3][y3]!=grid[x3+2][y3-1]) 
-        && (grid[x3][y3]!=grid[x3-1][y3] && grid[x3][y3]!=grid[x3+1][y3-2]) 
-        && (grid[x3][y3]!=grid[x3][y3-1] && grid[x3][y3]!=grid[x3-2][y3+1]) 
-        && (grid[x3][y3]!=grid[x3+1][y3] && grid[x3][y3]!=grid[x3-1][y3+2]) 
-        && (grid[x3][y3]!=grid[x3-1][y3+2] && grid[x3][y3]!=grid[x3][y3+1]) 
-        && (grid[x3][y3]!=grid[x3-2][y3+3] && grid[x3][y3]!=grid[x3-1][y3+2]) 
-        && (grid[x3][y3]!=grid[x3-2][y3+1] && grid[x3][y3]!=grid[x3-3][y3+2]) 
-        && (grid[x3][y3]!=grid[x3-1][y3] && grid[x3][y3]!=grid[x3-2][y3+1])){ 
+    int verifier=0, t=GRID_SIZE*GRID_SIZE, x1, y1, x2, y2, x3, y3, x4, y4;
+    for(int x=0; x<GRID_SIZE; x++){
+        for(int y=0; y<GRID_SIZE; y++){
+            x1=x+1;
+            y1=y;
+            x2=x+1;
+            y2=y+1;
+            x2=x+1;
+            y2=y+1;
+            if((grid[x][y]==grid[x1][y1+1] && grid[x][y]==grid[x1][y1+2])
+            && (grid[x][y]==grid[x1][y1-1] && grid[x][y]==grid[x1][y1-2])
+            && (grid[x][y]==grid[x1][y1-1] && grid[x][y]==grid[x1][y1+1])
+            && (grid[x][y]==grid[x1+1][y1] && grid[x][y]==grid[x1+2][y1])
+            && (grid[x][y]==grid[x1+1][y1] && grid[x][y]==grid[x1-1][y1])
+            && (grid[x][y]==grid[x1-1][y1] && grid[x][y]==grid[x1-2][y1])
+            && (grid[x][y]==grid[x1+1][y1+1] && grid[x][y]==grid[x1+2][y1+2])
+            && (grid[x][y]==grid[x1-1][y1-1] && grid[x][y]==grid[x1+1][y1+1])
+            && (grid[x][y]==grid[x1-1][y1-1] && grid[x][y]==grid[x1-2][y1-2])
+            && (grid[x][y]==grid[x1+1][y1-1] && grid[x][y]==grid[x1+2][y1-2])
+            && (grid[x][y]==grid[x1+1][y1-1] && grid[x][y]==grid[x1+1][y1+1])
+            && (grid[x][y]==grid[x1-1][y1+1] && grid[x][y]==grid[x1-2][y1+2])){
             verifier++;
             }
         }
