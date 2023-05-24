@@ -5,61 +5,23 @@
 char generateGrid(char grid[][26], int GRID_SIZE, int GRID_LETTERS);
 int grid_delete(char grid[][26], int GRID_SIZE);
 void print_grid(char grid[][26], int GRID_SIZE, int GRID_LETTERS);
+int game_stopper(char grid[][26], int GRID_SIZE, int p);
+void grid_filler(char grid[][26], int GRID_SIZE, int GRID_LETTERS);
 
 
 char generateGrid(char grid[][26], int GRID_SIZE, int GRID_LETTERS) {
     srand(time(NULL));
-    printf("   ");
-     //Affichage des colonnes d'itération (en haut)
     for (int i = 0; i < GRID_SIZE; i++) {
-        printf("%c ", 'A' + i);
-    }
-    printf("\n");
-    printf("   ");
-    for (int i = 0; i < GRID_SIZE; i++) {
-        printf("_ ");
-    }
-    printf("\n");
-    //Affichage des lignes d'itération(à gauche)
-    for (int i = 0; i < GRID_SIZE; i++) {
-        if(i<9){
-            printf("%d |",i+1);
-        }
-        else{
-            printf("%d|",i+1);
-        }
         for (int j = 0; j < GRID_SIZE; j++) {
             do {
                 grid[i][j] = 'A' + rand() % GRID_LETTERS;
-            } while ((grid[i][j]==grid[i][j-1] && grid[i][j]==grid[i][j-2]) // 3 lettres alignées horizontalement
-                    || (i >= 2 && grid[i][j]==grid[i-1][j] && grid[i][j]==grid[i-2][j]) // 3 lettres alignées verticalement
-                    || (i >= 2 && grid[i][j]==grid[i-1][j-1] && grid[i][j]==grid[i-2][j-2]) // 3 lettres alignées diagonalement (haut-gauche -> bas-droite)
-                    || (i >= 2 && j <= GRID_SIZE-3 && grid[i][j]==grid[i-1][j+1] && grid[i][j]==grid[i-2][j+2])); // 3 lettres alignées diagonalement (haut-droite -> bas-gauche)
-            switch(grid[i][j]){
-                case 'A':
-                    printf("\033[1;31m");//rouge
-                    break;
-                case 'B':
-                    printf("\033[1;32m");//vert
-                    break;
-                case 'C':
-                    printf("\033[1;33m");//jaune
-                    break;
-                case 'D':
-                    printf("\033[1;34m");//bleu
-                    break;
-                case 'E':
-                    printf("\033[1;36m");//cyan
-                    break;
-                case 'F':
-                    printf("\033[1;35m");//violet
-                    break;
-            }
-            printf("%c ", grid[i][j]);//Affichage du tableau entier
+            } while ((grid[i][j]==grid[i][j-1] && grid[i][j]==grid[i][j-2]) // vérification qu'il n'y a pas 3 lettres alignées horizontalement
+                    || (i >= 2 && grid[i][j]==grid[i-1][j] && grid[i][j]==grid[i-2][j]) // vérification qu'il n'y a pas 3 lettres alignées verticalement
+                    || (i >= 2 && grid[i][j]==grid[i-1][j-1] && grid[i][j]==grid[i-2][j-2]) // vérification qu'il n'y a pas 3 lettres alignées diagonalement (haut-gauche -> bas-droite)
+                    || (i >= 2 && j <= GRID_SIZE-3 && grid[i][j]==grid[i-1][j+1] && grid[i][j]==grid[i-2][j+2])); // vérification qu'il n'y a pas 3 lettres alignées diagonalement (haut-droite -> bas-gauche)
         }
-        printf("\033[1;37m");
-        printf("\n");
     }
+    print_grid(grid, GRID_SIZE, GRID_LETTERS);
 }
 
 int grid_delete(char grid[][26], int GRID_SIZE){
@@ -200,6 +162,8 @@ void print_grid(char grid[][26], int GRID_SIZE, int GRID_LETTERS){
                 break;
                 case 'F':
                     printf("\033[1;35m");//violet
+                break;
+                case ' ':
                 break;
             }
             printf("%c ", grid[i][j]);//Affichage du tableau entier
@@ -394,64 +358,34 @@ void moveLetter(char grid[][26], int GRID_SIZE, int GRID_LETTERS) {
     }
     x3=x1-1;
     x4=x2-1;
-    //FONCTIONNE PAS (enfin fonctionne à moitié)
-    if((grid[x3][y3]==grid[x3][y3+2] && grid[x3][y3]==grid[x3][y3+3]) // vérification que le joueur aligne 3 lettres horizontalement
-        || (grid[x3][y3]==grid[x3][y3-2] && grid[x3][y3]==grid[x3][y3-3]) // vérification que le joueur aligne 3 lettres horizontalement
-        || (grid[x3][y3]==grid[x3+1][y3+1] && grid[x3][y3]==grid[x3+1][y3+2]) // vérification que le joueur aligne 3 lettres horizontalement 
-        || (grid[x3][y3]==grid[x3+1][y3-1] && grid[x3][y3]==grid[x3+1][y3-2]) // vérification que le joueur aligne 3 lettres horizontalement
-        || (grid[x3][y3]==grid[x3+1][y3-1] && grid[x3][y3]==grid[x3+1][y3+1]) // vérification que le joueur aligne 3 lettres horizontalement 
-        || (grid[x3][y3]==grid[x3-1][y3+1] && grid[x3][y3]==grid[x3-1][y3+2]) // vérification que le joueur aligne 3 lettres horizontalement
-        || (grid[x3][y3]==grid[x3-1][y3-1] && grid[x3][y3]==grid[x3-1][y3-2]) // vérification que le joueur aligne 3 lettres horizontalement
-        || (grid[x3][y3]==grid[x3-1][y3-1] && grid[x3][y3]==grid[x3-1][y3+1]) // vérification que le joueur aligne 3 lettres horizontalement
-        || (grid[x3][y3]==grid[x3+2][y3] && grid[x3][y3]==grid[x3+3][y3]) // vérification que le joueur aligne 3 lettres verticalement
-        || (grid[x3][y3]==grid[x3+1][y3+1] && grid[x3][y3]==grid[x3+2][y3+1]) // vérification que le joueur aligne 3 lettres verticalement
-        || (grid[x3][y3]==grid[x3+1][y3-1] && grid[x3][y3]==grid[x3+2][y3-1]) // vérification que le joueur aligne 3 lettres verticalement
-        || (grid[x3][y3]==grid[x3+1][y3-1] && grid[x3][y3]==grid[x3-1][y3-1]) // vérification que le joueur aligne 3 lettres verticalement
-        || (grid[x3][y3]==grid[x3+1][y3+1] && grid[x3][y3]==grid[x3-1][y3+1]) // vérification que le joueur aligne 3 lettres verticalement
-        || (grid[x3][y3]==grid[x3-2][y3] && grid[x3][y3]==grid[x3-3][y3]) // vérification que le joueur aligne 3 lettres verticalement
-        || (grid[x3][y3]==grid[x3-1][y3+1] && grid[x3][y3]==grid[x3-2][y3+1]) // vérification que le joueur aligne 3 lettres verticalement
-        || (grid[x3][y3]==grid[x3-1][y3-1] && grid[x3][y3]==grid[x3-2][y3-1]) // vérification que le joueur aligne 3 lettres verticalement
-        || (grid[x3][y3]==grid[x3+1][y3+2] && grid[x3][y3]==grid[x3+2][y3+3]) // vérification que le joueur aligne 3 lettres diagonalement (haut-gauche -> bas-droite)
-        || (grid[x3][y3]==grid[x3][y3+1] && grid[x3][y3]==grid[x3+1][y3+2]) // vérification que le joueur aligne 3 lettres diagonalement (haut-gauche -> bas-droite)
-        || (grid[x3][y3]==grid[x3+2][y3+1] && grid[x3][y3]==grid[x3+3][y3+2]) // vérification que le joueur aligne 3 lettres diagonalement (haut-gauche -> bas-droite)
-        || (grid[x3][y3]==grid[x3+1][y3] && grid[x3][y3]==grid[x3+2][y3+1]) // vérification que le joueur aligne 3 lettres diagonalement (haut-gauche -> bas-droite)
-        || (grid[x3][y3]==grid[x3][y3-1] && grid[x3][y3]==grid[x3+2][y3+1]) // vérification que le joueur aligne 3 lettres diagonalement (haut-gauche -> bas-droite)
-        || (grid[x3][y3]==grid[x3-1][y3] && grid[x3][y3]==grid[x3+1][y3+2]) // vérification que le joueur aligne 3 lettres diagonalement (haut-gauche -> bas-droite)
-        || (grid[x3][y3]==grid[x3][y3+1] && grid[x3][y3]==grid[x3-2][y3-1]) // vérification que le joueur aligne 3 lettres diagonalement (haut-gauche -> bas-droite)
-        || (grid[x3][y3]==grid[x3+1][y3] && grid[x3][y3]==grid[x3-1][y3-2]) // vérification que le joueur aligne 3 lettres diagonalement (haut-gauche -> bas-droite)
-        || (grid[x3][y3]==grid[x3-1][y3-2] && grid[x3][y3]==grid[x3][y3-1]) // vérification que le joueur aligne 3 lettres diagonalement (haut-gauche -> bas-droite)
-        || (grid[x3][y3]==grid[x3-2][y3-3] && grid[x3][y3]==grid[x3-1][y3-2]) // vérification que le joueur aligne 3 lettres diagonalement (haut-gauche -> bas-droite)
-        || (grid[x3][y3]==grid[x3-2][y3-1] && grid[x3][y3]==grid[x3-3][y3-2]) // vérification que le joueur aligne 3 lettres diagonalement (haut-gauche -> bas-droite)
-        || (grid[x3][y3]==grid[x3-1][y3] && grid[x3][y3]==grid[x3-2][y3-1]) // vérification que le joueur aligne 3 lettres diagonalement (haut-gauche -> bas-droite)
-        || (grid[x3][y3]==grid[x3][y3-2] && grid[x3][y3]==grid[x3][y3-3]) // vérification que le joueur aligne 3 lettres diagonalement (haut-droite -> bas-gauche)
-        || (grid[x3][y3]==grid[x3+1][y3-2] && grid[x3][y3]==grid[x3+2][y3-3]) // vérification que le joueur aligne 3 lettres diagonalement (haut-droite -> bas-gauche)
-        || (grid[x3][y3]==grid[x3][y3-1] && grid[x3][y3]==grid[x3+1][y3-2]) // vérification que le joueur aligne 3 lettres diagonalement (haut-droite -> bas-gauche)
-        || (grid[x3][y3]==grid[x3+2][y3-1] && grid[x3][y3]==grid[x3+3][y3-2]) // vérification que le joueur aligne 3 lettres diagonalement (haut-droite -> bas-gauche)
-        || (grid[x3][y3]==grid[x3+1][y3] && grid[x3][y3]==grid[x3+2][y3-1]) // vérification que le joueur aligne 3 lettres diagonalement (haut-droite -> bas-gauche)
-        || (grid[x3][y3]==grid[x3][y3+1] && grid[x3][y3]==grid[x3+2][y3-1]) // vérification que le joueur aligne 3 lettres diagonalement (haut-droite -> bas-gauche)
-        || (grid[x3][y3]==grid[x3-1][y3] && grid[x3][y3]==grid[x3+1][y3-2]) // vérification que le joueur aligne 3 lettres diagonalement (haut-droite -> bas-gauche)
-        || (grid[x3][y3]==grid[x3][y3-1] && grid[x3][y3]==grid[x3-2][y3+1]) // vérification que le joueur aligne 3 lettres diagonalement (haut-droite -> bas-gauche)
-        || (grid[x3][y3]==grid[x3+1][y3] && grid[x3][y3]==grid[x3-1][y3+2]) // vérification que le joueur aligne 3 lettres diagonalement (haut-droite -> bas-gauche)
-        || (grid[x3][y3]==grid[x3-1][y3+2] && grid[x3][y3]==grid[x3][y3+1]) // vérification que le joueur aligne 3 lettres diagonalement (haut-droite -> bas-gauche)
-        || (grid[x3][y3]==grid[x3-2][y3+3] && grid[x3][y3]==grid[x3-1][y3+2]) // vérification que le joueur aligne 3 lettres diagonalement (haut-droite -> bas-gauche)
-        || (grid[x3][y3]==grid[x3-2][y3+1] && grid[x3][y3]==grid[x3-3][y3+2]) // vérification que le joueur aligne 3 lettres diagonalement (haut-droite -> bas-gauche)
-        || (grid[x3][y3]==grid[x3-1][y3] && grid[x3][y3]==grid[x3-2][y3+1])){ // vérification que le joueur aligne 3 lettres diagonalement (haut-droite -> bas-gauche)
-       //Echange des cases
+    if((grid[x3][y3]==grid[x4][y4+1] && grid[x3][y3]==grid[x4][y4+2]) // vérification que le joueur aligne 3 lettres horizontalement
+        || (grid[x3][y3]==grid[x4][y4-1] && grid[x3][y3]==grid[x4][y4-2]) // vérification que le joueur aligne 3 lettres horizontalement
+        || (grid[x3][y3]==grid[x4][y4-1] && grid[x3][y3]==grid[x4][y4+1]) // vérification que le joueur aligne 3 lettres horizontalement
+        || (grid[x3][y3]==grid[x4+1][y4] && grid[x3][y3]==grid[x4+2][y4])
+        || (grid[x3][y3]==grid[x4+1][y4] && grid[x3][y3]==grid[x4-1][y4]) // vérification que le joueur aligne 3 lettres verticalement
+        || (grid[x3][y3]==grid[x4-1][y4] && grid[x3][y3]==grid[x4-2][y4]) // vérification que le joueur aligne 3 lettres verticalement
+        || (grid[x3][y3]==grid[x4+1][y4+1] && grid[x3][y3]==grid[x4+2][y4+2]) // vérification que le joueur aligne 3 lettres diagonalement (haut-gauche -> bas-droite)
+        || (grid[x3][y3]==grid[x4-1][y4-1] && grid[x3][y3]==grid[x4+1][y4+1]) // vérification que le joueur aligne 3 lettres diagonalement (haut-gauche -> bas-droite)
+        || (grid[x3][y3]==grid[x4-1][y4-1] && grid[x3][y3]==grid[x4-2][y4-2]) // vérification que le joueur aligne 3 lettres diagonalement (haut-gauche -> bas-droite)
+        || (grid[x3][y3]==grid[x4+1][y4-1] && grid[x3][y3]==grid[x4+2][y4-2]) // vérification que le joueur aligne 3 lettres diagonalement (haut-droite -> bas-gauche)
+        || (grid[x3][y3]==grid[x4+1][y4-1] && grid[x3][y3]==grid[x4+1][y4+1]) // vérification que le joueur aligne 3 lettres diagonalement (haut-droite -> bas-gauche)
+        || (grid[x3][y3]==grid[x4-1][y4+1] && grid[x3][y3]==grid[x4-2][y4+2])){ // vérification que le joueur aligne 3 lettres diagonalement (haut-droite -> bas-gauche)
         char temp = grid[x3][y3];
         grid[x3][y3] = grid[x4][y4];
         grid[x4][y4] = temp;
-        for(int i=0; i<4;i++) {
+        for(int i=0; i<3;i++) {
         grid_delete(grid, GRID_SIZE);
         }
         print_grid(grid, GRID_SIZE, GRID_LETTERS);
     }
-    else{
+    else{//Echange des cases
         printf("\033[1;31m");
         printf("Le deplacement doit aligner au minimum 3 symboles identiques\n");
         printf("\033[1;37m");
         moveLetter(grid, GRID_SIZE, GRID_LETTERS);
     }
 }
+
 
 void gravite_new(char grid[][26], int GRID_SIZE, int GRID_LETTERS){
     char del = ' '; // caractère qui représente une case vide
@@ -531,30 +465,68 @@ int score(char grid[][26], int GRID_SIZE, int GRID_LETTERS, int *p){
 }
 
 void game(char grid[][26], int GRID_SIZE, int GRID_LETTERS){
-
     int *p;
     int point=0;
     p=&point;
     char del = ' ';
-
 	for(int i=0;i<5;i++){
-        
         moveLetter(grid, GRID_SIZE, GRID_LETTERS);
         point = score(grid, GRID_SIZE, GRID_LETTERS,p);
          do{
            gravite_new(grid, GRID_SIZE, GRID_LETTERS); //gravité plus faire apparaitre des nouvelles lettres
            point = score(grid, GRID_SIZE, GRID_LETTERS,p);
            grid_delete(grid, GRID_SIZE);               //supprimer si il y a encore des lettres alignés
-           print_grid(grid, GRID_SIZE, GRID_LETTERS);  //(on peut suppprimer cette fonction) c justre pour voir les étapes du programme 
-           printf("Points: %d\n", point);              //(on peut suppprimer cette fonction) c justre pour voir les étapes du programme 
+           print_grid(grid, GRID_SIZE, GRID_LETTERS);  //(on peut suppprimer cette fonction) c juste pour voir les étapes du programme 
+           printf("Points: %d\n", point);              //(on peut suppprimer cette fonction) c juste pour voir les étapes du programme 
          }while(good_grid(grid, GRID_SIZE, GRID_LETTERS)==0); //verifier qu'il n'y a pas de case vide dans la grille
-
-
         print_grid(grid, GRID_SIZE, GRID_LETTERS);
         printf("Points: %d\n", point);
 
 
     }
+}
+
+
+int game_stopper(char grid[][26], int GRID_SIZE, int p){// vérification que le joueur ne peut plus aligner 3 lettres
+    char joueur[30];
+    int verifier=0, t=GRID_SIZE*GRID_SIZE, x1, y1, x2, y2, x3, y3, x4, y4;
+    for(int x=0; x<GRID_SIZE; x++){
+        for(int y=0; y<GRID_SIZE; y++){
+            // vérification que le joueur ne peut plus aligner 3 lettres avec la case au dessus
+            x1=x-1;
+            y1=y;
+            // vérification que le joueur ne peut plus aligner 3 lettres avec la case à gauche
+            x2=x;
+            y2=y-1;
+            // vérification que le joueur ne peut plus aligner 3 lettres avec la case à droite
+            x3=x;
+            y3=y+1;
+            // vérification que le joueur ne peut plus aligner 3 lettres avec la case en dessous
+            x4=x+1;
+            y4=y;
+            if((grid[x][y]==grid[x1][y1+1] && grid[x][y]==grid[x1][y1+2])
+            && (grid[x][y]==grid[x1][y1-1] && grid[x][y]==grid[x1][y1-2])
+            && (grid[x][y]==grid[x1][y1-1] && grid[x][y]==grid[x1][y1+1])
+            && (grid[x][y]==grid[x1+1][y1] && grid[x][y]==grid[x1+2][y1])
+            && (grid[x][y]==grid[x1+1][y1] && grid[x][y]==grid[x1-1][y1])
+            && (grid[x][y]==grid[x1-1][y1] && grid[x][y]==grid[x1-2][y1])
+            && (grid[x][y]==grid[x1+1][y1+1] && grid[x][y]==grid[x1+2][y1+2])
+            && (grid[x][y]==grid[x1-1][y1-1] && grid[x][y]==grid[x1+1][y1+1])
+            && (grid[x][y]==grid[x1-1][y1-1] && grid[x][y]==grid[x1-2][y1-2])
+            && (grid[x][y]==grid[x1+1][y1-1] && grid[x][y]==grid[x1+2][y1-2])
+            && (grid[x][y]==grid[x1+1][y1-1] && grid[x][y]==grid[x1+1][y1+1])
+            && (grid[x][y]==grid[x1-1][y1+1] && grid[x][y]==grid[x1-2][y1+2])){
+            verifier++;
+            }
+        }
+    }
+    if(verifier==t){
+        printf("Votre Gamertag : ");
+        scanf("%s\n",joueur);
+        printf("%s, vous avais fait %d points\n",joueur, p);
+        return 1;
+    }
+    return 0;
 }
 
 
