@@ -663,12 +663,18 @@ int game_stopper(char grid[][26], int GRID_SIZE, int p){// vérification que le 
     int verifier=0, t=GRID_SIZE*GRID_SIZE, x1, y1, x2, y2, x3, y3, x4, y4;
     for(int x=0; x<GRID_SIZE; x++){
         for(int y=0; y<GRID_SIZE; y++){
-            x1=x+1;
+            // vérification que le joueur ne peut plus aligner 3 lettres avec la case au dessus
+            x1=x-1;
             y1=y;
-            x2=x+1;
-            y2=y+1;
-            x2=x+1;
-            y2=y+1;
+            // vérification que le joueur ne peut plus aligner 3 lettres avec la case à gauche
+            x2=x;
+            y2=y-1;
+            // vérification que le joueur ne peut plus aligner 3 lettres avec la case à droite
+            x3=x;
+            y3=y+1;
+            // vérification que le joueur ne peut plus aligner 3 lettres avec la case en dessous
+            x4=x+1;
+            y4=y;
             if((grid[x][y]==grid[x1][y1+1] && grid[x][y]==grid[x1][y1+2])
             && (grid[x][y]==grid[x1][y1-1] && grid[x][y]==grid[x1][y1-2])
             && (grid[x][y]==grid[x1][y1-1] && grid[x][y]==grid[x1][y1+1])
