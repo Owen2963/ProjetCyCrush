@@ -389,24 +389,20 @@ void moveLetter(char grid[][26], int GRID_SIZE, int GRID_LETTERS) {
 
 void gravite_new(char grid[][26], int GRID_SIZE, int GRID_LETTERS){
     char del = ' '; // caractère qui représente une case vide
- 
-    for(int rep=0; rep<GRID_SIZE;rep++){       //permet de faire monter les cases vide
-     for(int i= 1; i <GRID_SIZE ; i++){
-                for(int j= 0; j< GRID_SIZE; j++){
-                    if(grid[i][j] == del){
-                       grid[i][j] = grid[i-1][j];
-                       grid[i-1][j] = del;
-                    }
+    for(int rep=0; rep<GRID_SIZE;rep++){//permet de faire monter les cases vide (gravité)
+        for(int i= 1; i <GRID_SIZE ; i++){
+            for(int j= 0; j< GRID_SIZE; j++){
+                if(grid[i][j] == del){
+                    grid[i][j] = grid[i-1][j];
+                    grid[i-1][j] = del;
                 }
-            
-         }
+            }
+        }
     }
-        for (int j = 0; j < GRID_SIZE; j++) {       //permet de remplir les cases vides 
-            do {
-                if(grid[0][j]==del){//verifier si il y a une case vide
-            	 grid[0][j] = 'A' + rand() % GRID_LETTERS;
-
-        
+    for (int j = 0; j < GRID_SIZE; j++) {//permet de remplir les cases vides 
+        do {
+            if(grid[0][j]==del){//verifier si il y a une case vide (0 car on est en haut)
+                grid[0][j] = 'A' + rand() % GRID_LETTERS;
                 for(int i=1; i<GRID_SIZE; i++){
                     if (grid[i][j] == del){
                        grid[i][j] = grid[i-1][j];
@@ -414,11 +410,10 @@ void gravite_new(char grid[][26], int GRID_SIZE, int GRID_LETTERS){
                     }
                 }
             }
-            }while(grid[0][j] == del);
-        }
-    
-    
+        }while(grid[0][j] == del);
+    }
 }
+
 
 int good_grid(char grid[][26], int GRID_SIZE, int GRID_LETTERS){
     char del = ' '; // caractère qui représente une case vide
