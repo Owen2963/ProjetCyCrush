@@ -29,7 +29,7 @@ char generateGrid(char grid[][26], int GRID_SIZE, int GRID_LETTERS) {
 int grid_delete(char grid[][26], int GRID_SIZE){
     char del = ' '; // caractère qui représente une case vide
     int found_align = 0;
-    for(int h = 0; h < 3; h++){ 
+    for(int h = 0; h < 3; h++){
         for (int i = 0; i < GRID_SIZE - 2; i++) {
             for (int j = 0; j < GRID_SIZE; j++) {
                 if(grid[i][j]==grid[i+1][j] && grid[i+1][j]==grid[i+2][j] && grid[i+2][j]==grid[i+3][j] && grid[i+3][j]==grid[i+4][j]){//vérifie et élimine 5 lettres alignés verticalement
