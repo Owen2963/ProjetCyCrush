@@ -7,6 +7,7 @@ int grid_delete(char grid[][26], int GRID_SIZE);
 void print_grid(char grid[][26], int GRID_SIZE, int GRID_LETTERS);
 int game_stopper(char grid[][26], int GRID_SIZE, int p);
 void grid_filler(char grid[][26], int GRID_SIZE, int GRID_LETTERS);
+int good_grid(char grid[][26], int GRID_SIZE, int GRID_LETTERS);
 
 
 char generateGrid(char grid[][26], int GRID_SIZE, int GRID_LETTERS) {
@@ -27,7 +28,7 @@ char generateGrid(char grid[][26], int GRID_SIZE, int GRID_LETTERS) {
 int grid_delete(char grid[][26], int GRID_SIZE){
     char del = ' '; // caractère qui représente une case vide
     int found_align = 0;
-    for(int h = 0; h < 3; h++){
+    for (int h = 0; h < 10; h++) {
         for (int i = 0; i < GRID_SIZE - 2; i++) {
             for (int j = 0; j < GRID_SIZE; j++) {
                 if(grid[i][j]==grid[i+1][j] && grid[i+1][j]==grid[i+2][j] && grid[i+2][j]==grid[i+3][j] && grid[i+3][j]==grid[i+4][j]){//vérifie et élimine 5 lettres alignés verticalement
@@ -389,20 +390,24 @@ void moveLetter(char grid[][26], int GRID_SIZE, int GRID_LETTERS) {
 
 void gravite_new(char grid[][26], int GRID_SIZE, int GRID_LETTERS){
     char del = ' '; // caractère qui représente une case vide
-    for(int rep=0; rep<GRID_SIZE;rep++){//permet de faire monter les cases vide (gravité)
-        for(int i= 1; i <GRID_SIZE ; i++){
-            for(int j= 0; j< GRID_SIZE; j++){
-                if(grid[i][j] == del){
-                    grid[i][j] = grid[i-1][j];
-                    grid[i-1][j] = del;
+ 
+    for(int rep=0; rep<GRID_SIZE;rep++){       //permet de faire monter les cases vide
+     for(int i= 1; i <GRID_SIZE ; i++){
+                for(int j= 0; j< GRID_SIZE; j++){
+                    if(grid[i][j] == del){
+                       grid[i][j] = grid[i-1][j];
+                       grid[i-1][j] = del;
+                    }
                 }
-            }
-        }
+            
+         }
     }
-    for (int j = 0; j < GRID_SIZE; j++) {//permet de remplir les cases vides 
-        do {
-            if(grid[0][j]==del){//verifier si il y a une case vide (0 car on est en haut)
-                grid[0][j] = 'A' + rand() % GRID_LETTERS;
+        for (int j = 0; j < GRID_SIZE; j++) {       //permet de remplir les cases vides 
+            do {
+                if(grid[0][j]==del){//verifier si il y a une case vide
+            	 grid[0][j] = 'A' + rand() % GRID_LETTERS;
+
+        
                 for(int i=1; i<GRID_SIZE; i++){
                     if (grid[i][j] == del){
                        grid[i][j] = grid[i-1][j];
@@ -410,10 +415,11 @@ void gravite_new(char grid[][26], int GRID_SIZE, int GRID_LETTERS){
                     }
                 }
             }
-        }while(grid[0][j] == del);
-    }
+            }while(grid[0][j] == del);
+        }
+    
+    
 }
-
 
 int good_grid(char grid[][26], int GRID_SIZE, int GRID_LETTERS){
     char del = ' '; // caractère qui représente une case vide
@@ -432,7 +438,6 @@ int score(char grid[][26], int GRID_SIZE, int GRID_LETTERS, int *p){
 
 
  for (int j = 0; j < GRID_SIZE; j++) {
-
             for (int h = 0; h < GRID_SIZE; h++) {     
                 if((grid[j][h]==grid[j][h+1] && grid[j][h]==grid[j][h+2] && grid[j][h]==grid[j][h+3]&& grid[j][h]==grid[j][h+4]) // 5 lettres alignées horizontalement
                         || (grid[j][h]==grid[j+1][h] && grid[j][h]==grid[j+2][h] && grid[j][h]==grid[j+3][h] && grid[j][h]==grid[j+4][h]) // 5 lettres alignées verticalement
@@ -471,13 +476,9 @@ void game(char grid[][26], int GRID_SIZE, int GRID_LETTERS){
            gravite_new(grid, GRID_SIZE, GRID_LETTERS); //gravité plus faire apparaitre des nouvelles lettres
            point = score(grid, GRID_SIZE, GRID_LETTERS,p);
            grid_delete(grid, GRID_SIZE);               //supprimer si il y a encore des lettres alignés
-           print_grid(grid, GRID_SIZE, GRID_LETTERS);  //(on peut suppprimer cette fonction) c juste pour voir les étapes du programme 
-           printf("Points: %d\n", point);              //(on peut suppprimer cette fonction) c juste pour voir les étapes du programme 
          }while(good_grid(grid, GRID_SIZE, GRID_LETTERS)==0); //verifier qu'il n'y a pas de case vide dans la grille
         print_grid(grid, GRID_SIZE, GRID_LETTERS);
         printf("Points: %d\n", point);
-
-
     }
 }
 
