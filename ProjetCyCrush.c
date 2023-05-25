@@ -28,7 +28,7 @@ char generateGrid(char grid[][26], int GRID_SIZE, int GRID_LETTERS) {
 int grid_delete(char grid[][26], int GRID_SIZE){
     char del = ' '; // caractère qui représente une case vide
     int found_align = 0;
-    for (int h = 0; h < 10; h++) {
+    for (int h = 0; h < 4; h++) { //Nombre maximum de combinaison qu'on peut créer avec un déplacement
         for (int i = 0; i < GRID_SIZE - 2; i++) {
             for (int j = 0; j < GRID_SIZE; j++) {
                 if(grid[i][j]==grid[i+1][j] && grid[i+1][j]==grid[i+2][j] && grid[i+2][j]==grid[i+3][j] && grid[i+3][j]==grid[i+4][j]){//vérifie et élimine 5 lettres alignés verticalement
@@ -362,7 +362,7 @@ void moveLetter(char grid[][26], int GRID_SIZE, int GRID_LETTERS) {
     if((grid[x3][y3]==grid[x4][y4+1] && grid[x3][y3]==grid[x4][y4+2]) // vérification que le joueur aligne 3 lettres horizontalement
         || (grid[x3][y3]==grid[x4][y4-1] && grid[x3][y3]==grid[x4][y4-2]) // vérification que le joueur aligne 3 lettres horizontalement
         || (grid[x3][y3]==grid[x4][y4-1] && grid[x3][y3]==grid[x4][y4+1]) // vérification que le joueur aligne 3 lettres horizontalement
-        || (grid[x3][y3]==grid[x4+1][y4] && grid[x3][y3]==grid[x4+2][y4])
+        || (grid[x3][y3]==grid[x4+1][y4] && grid[x3][y3]==grid[x4+2][y4]) // vérification que le joueur aligne 3 lettres verticalement
         || (grid[x3][y3]==grid[x4+1][y4] && grid[x3][y3]==grid[x4-1][y4]) // vérification que le joueur aligne 3 lettres verticalement
         || (grid[x3][y3]==grid[x4-1][y4] && grid[x3][y3]==grid[x4-2][y4]) // vérification que le joueur aligne 3 lettres verticalement
         || (grid[x3][y3]==grid[x4+1][y4+1] && grid[x3][y3]==grid[x4+2][y4+2]) // vérification que le joueur aligne 3 lettres diagonalement (haut-gauche -> bas-droite)
@@ -406,8 +406,6 @@ void gravite_new(char grid[][26], int GRID_SIZE, int GRID_LETTERS){
             do {
                 if(grid[0][j]==del){//verifier si il y a une case vide
             	 grid[0][j] = 'A' + rand() % GRID_LETTERS;
-
-        
                 for(int i=1; i<GRID_SIZE; i++){
                     if (grid[i][j] == del){
                        grid[i][j] = grid[i-1][j];
@@ -465,21 +463,23 @@ int score(char grid[][26], int GRID_SIZE, int GRID_LETTERS, int *p){
 }
 
 void game(char grid[][26], int GRID_SIZE, int GRID_LETTERS){
-    int *p;
+    int *p, gs=0;
     int point=0;
     p=&point;
     char del = ' ';
-	for(int i=0;i<5;i++){
+	do{
+        gs=game_stopper(grid, GRID_SIZE, point);
         moveLetter(grid, GRID_SIZE, GRID_LETTERS);
         point = score(grid, GRID_SIZE, GRID_LETTERS,p);
          do{
            gravite_new(grid, GRID_SIZE, GRID_LETTERS); //gravité plus faire apparaitre des nouvelles lettres
            point = score(grid, GRID_SIZE, GRID_LETTERS,p);
-           grid_delete(grid, GRID_SIZE);               //supprimer si il y a encore des lettres alignés
+           grid_delete(grid, GRID_SIZE); //supprimer si il y a encore des lettres alignés
          }while(good_grid(grid, GRID_SIZE, GRID_LETTERS)==0); //verifier qu'il n'y a pas de case vide dans la grille
         print_grid(grid, GRID_SIZE, GRID_LETTERS);
         printf("Points: %d\n", point);
-    }
+    }while (gs!=1);
+    exit(1);
 }
 
 
@@ -488,30 +488,50 @@ int game_stopper(char grid[][26], int GRID_SIZE, int p){// vérification que le 
     int verifier=0, t=GRID_SIZE*GRID_SIZE, x1, y1, x2, y2, x3, y3, x4, y4;
     for(int x=0; x<GRID_SIZE; x++){
         for(int y=0; y<GRID_SIZE; y++){
-            // vérification que le joueur ne peut plus aligner 3 lettres avec la case au dessus
+            // la case au dessus
             x1=x-1;
             y1=y;
-            // vérification que le joueur ne peut plus aligner 3 lettres avec la case à gauche
+            // la case à gauche
             x2=x;
             y2=y-1;
-            // vérification que le joueur ne peut plus aligner 3 lettres avec la case à droite
+            // la case à droite
             x3=x;
             y3=y+1;
-            // vérification que le joueur ne peut plus aligner 3 lettres avec la case en dessous
+            // la case en dessous
             x4=x+1;
             y4=y;
-            if((grid[x][y]==grid[x1][y1+1] && grid[x][y]==grid[x1][y1+2])
-            && (grid[x][y]==grid[x1][y1-1] && grid[x][y]==grid[x1][y1-2])
-            && (grid[x][y]==grid[x1][y1-1] && grid[x][y]==grid[x1][y1+1])
-            && (grid[x][y]==grid[x1+1][y1] && grid[x][y]==grid[x1+2][y1])
-            && (grid[x][y]==grid[x1+1][y1] && grid[x][y]==grid[x1-1][y1])
-            && (grid[x][y]==grid[x1-1][y1] && grid[x][y]==grid[x1-2][y1])
-            && (grid[x][y]==grid[x1+1][y1+1] && grid[x][y]==grid[x1+2][y1+2])
-            && (grid[x][y]==grid[x1-1][y1-1] && grid[x][y]==grid[x1+1][y1+1])
-            && (grid[x][y]==grid[x1-1][y1-1] && grid[x][y]==grid[x1-2][y1-2])
-            && (grid[x][y]==grid[x1+1][y1-1] && grid[x][y]==grid[x1+2][y1-2])
-            && (grid[x][y]==grid[x1+1][y1-1] && grid[x][y]==grid[x1+1][y1+1])
-            && (grid[x][y]==grid[x1-1][y1+1] && grid[x][y]==grid[x1-2][y1+2])){
+            if((grid[x][y]!=grid[x1][y1+1] || grid[x][y]!=grid[x1][y1+2])// vérification que le joueur ne peut plus aligner 3 lettres avec la case au dessus
+            && (grid[x][y]!=grid[x1][y1-1] || grid[x][y]!=grid[x1][y1-2])
+            && (grid[x][y]!=grid[x1][y1-1] || grid[x][y]!=grid[x1][y1+1])
+            && (grid[x][y]!=grid[x1-1][y1] || grid[x][y]!=grid[x1-2][y1])
+            && (grid[x][y]!=grid[x1-1][y1-1] || grid[x][y]!=grid[x1-2][y1-2])
+            && (grid[x][y]!=grid[x1-1][y1+1] || grid[x][y]!=grid[x1-2][y1+2])
+            && (grid[x][y]!=grid[x2][y2-1] || grid[x][y]!=grid[x2][y2-2])// vérification que le joueur ne peut plus aligner 3 lettres avec la case à gauche
+            && (grid[x][y]!=grid[x2+1][y2] || grid[x][y]!=grid[x2+2][y2])
+            && (grid[x][y]!=grid[x2+1][y2] || grid[x][y]!=grid[x2-1][y2])
+            && (grid[x][y]!=grid[x2-1][y2] || grid[x][y]!=grid[x2-2][y2])
+            && (grid[x][y]!=grid[x2+1][y2+1] || grid[x][y]!=grid[x2-1][y2-1])
+            && (grid[x][y]!=grid[x2-1][y2-1] || grid[x][y]!=grid[x2-2][y2-2])
+            && (grid[x][y]!=grid[x2+1][y2-1] || grid[x][y]!=grid[x2+2][y2-2])
+            && (grid[x][y]!=grid[x3][y3+1] || grid[x][y]!=grid[x3][y3+2]) // vérification que le joueur ne peut plus aligner 3 lettres avec la case à droite
+            && (grid[x][y]!=grid[x3+1][y3] || grid[x][y]!=grid[x3+2][y3])
+            && (grid[x][y]!=grid[x3+1][y3] || grid[x][y]!=grid[x3-1][y3])
+            && (grid[x][y]!=grid[x3-1][y3] || grid[x][y]!=grid[x3-2][y3])
+            && (grid[x][y]!=grid[x3+1][y3+1] || grid[x][y]!=grid[x3+2][y3+2])
+            && (grid[x][y]!=grid[x3-1][y3-1] || grid[x][y]!=grid[x3+1][y3+1])
+            && (grid[x][y]!=grid[x3-1][y3+1] || grid[x][y]!=grid[x3-2][y3+2])
+            && (grid[x][y]!=grid[x3-1][y3+1] || grid[x][y]!=grid[x3-2][y3+2])
+            && (grid[x][y]!=grid[x4][y4+1] || grid[x][y]!=grid[x4][y4+2]) // vérification que le joueur ne peut plus aligner 3 lettres avec la case en dessous
+            && (grid[x][y]!=grid[x4][y4-1] || grid[x][y]!=grid[x4][y4-2])
+            && (grid[x][y]!=grid[x4][y4-1] || grid[x][y]!=grid[x4][y4+1])
+            && (grid[x][y]!=grid[x4+1][y4] || grid[x][y]!=grid[x4+2][y4])
+            && (grid[x][y]!=grid[x4+1][y4+1] || grid[x][y]!=grid[x4+2][y4+2])
+            && (grid[x][y]!=grid[x4+1][y4-1] || grid[x][y]!=grid[x4+2][y4-2])
+            && (grid[x][y]!=grid[x4-1][y4-1] || grid[x][y]!=grid[x4+1][y4+1])
+            && (grid[x][y]!=grid[x4-1][y4+1] || grid[x][y]!=grid[x4+1][y4-1])
+            && (grid[x][y]!=grid[x4-1][y4-1] || grid[x][y]!=grid[x4-2][y4-2])
+            && (grid[x][y]!=grid[x4+1][y4-1] || grid[x][y]!=grid[x4+1][y4+1])
+            && (grid[x][y]!=grid[x4-1][y4+1] || grid[x][y]!=grid[x4-2][y4+2])){
             verifier++;
             }
         }
@@ -522,7 +542,9 @@ int game_stopper(char grid[][26], int GRID_SIZE, int p){// vérification que le 
         printf("%s, vous avais fait %d points\n",joueur, p);
         return 1;
     }
-    return 0;
+    else{
+        return 0;
+    }
 }
 
 
