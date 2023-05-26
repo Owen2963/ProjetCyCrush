@@ -29,7 +29,7 @@ int grid_delete(char grid[][26], int GRID_SIZE){
     char del = ' '; //caractère qui représente une case vide
     int found_align = 0;
     for (int h = 0; h < 4; h++) { //Nombre maximum de combinaison qu'on peut créer avec un déplacement
-        for (int i = 0; i < GRID_SIZE - 2; i++) {
+        for (int i = 0; i < GRID_SIZE; i++) {
             for (int j = 0; j < GRID_SIZE; j++) {
                 if(grid[i][j]==grid[i+1][j] && grid[i+1][j]==grid[i+2][j] && grid[i+2][j]==grid[i+3][j] && grid[i+3][j]==grid[i+4][j]){//vérifie et élimine 5 lettres alignés verticalement
                     grid[i][j]=del;
@@ -176,7 +176,7 @@ void print_grid(char grid[][26], int GRID_SIZE, int GRID_LETTERS){ //Affichage d
 
 void moveLetter(char grid[][26], int GRID_SIZE, int GRID_LETTERS) {
     int x1, x2, x3, x4, y3, y4;
-    char  y1 ,y2, max='A'+GRID_LETTERS+1; //max correspond à la lettre de la dernière colonne la grille
+    char  y1 ,y2, max='A'+GRID_SIZE; //max correspond à la lettre de la dernière colonne la grille
     printf("Entrez les coordonnees de la lettre que vous voulez deplacer (ligne, colonne): ");
     scanf("%d %c", &x1, &y1);
     //On vérifie que l'élément est dans le tableau
@@ -373,9 +373,6 @@ void moveLetter(char grid[][26], int GRID_SIZE, int GRID_LETTERS) {
         char temp = grid[x3][y3]; //changement de cases
         grid[x3][y3] = grid[x4][y4];
         grid[x4][y4] = temp;
-        for(int i=0; i<3;i++) {
-            grid_delete(grid, GRID_SIZE); //supression des symboles après le changement de cases
-        }
         print_grid(grid, GRID_SIZE, GRID_LETTERS);
     }
     else{//Echange des cases
@@ -465,11 +462,11 @@ void game(char grid[][26], int GRID_SIZE, int GRID_LETTERS){
         gs=game_stopper(grid, GRID_SIZE, point);
         moveLetter(grid, GRID_SIZE, GRID_LETTERS);
         point = score(grid, GRID_SIZE, GRID_LETTERS,p);
-         do{
-           gravite_new(grid, GRID_SIZE, GRID_LETTERS); //gravité qui faire apparaitre des nouvelles lettres
-           point = score(grid, GRID_SIZE, GRID_LETTERS,p);
-           grid_delete(grid, GRID_SIZE); //supprime les lettres alignés
-         }while(good_grid(grid, GRID_SIZE, GRID_LETTERS)==0); //verifier qu'il n'y a pas de case vide dans la grille
+        do{
+            point = score(grid, GRID_SIZE, GRID_LETTERS,p);
+            gravite_new(grid, GRID_SIZE, GRID_LETTERS); //gravité qui faire apparaitre des nouvelles lettres
+            grid_delete(grid, GRID_SIZE); //supprime les lettres alignés
+        }while(good_grid(grid, GRID_SIZE, GRID_LETTERS)==0); //verifier qu'il n'y a pas de case vide dans la grille
         print_grid(grid, GRID_SIZE, GRID_LETTERS);
         printf("Score: %d\n", point);//Affichage du score actuel du joueur
     }while (gs!=1);
