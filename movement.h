@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#ifndef GRID_H
+#ifndef GRID_H //Inclusion des fonctions nécessaires pour la fonction
     #define GRID_H
     #include "grid.h"
     #endif
