@@ -25,6 +25,7 @@ char generateGrid(char grid[][26], int GRID_SIZE, int GRID_LETTERS) {
     print_grid(grid, GRID_SIZE, GRID_LETTERS);
 }
 
+
 int grid_delete(char grid[][26], int GRID_SIZE){
     char del = ' '; // caractère qui représente une case vide
     int found_align = 0;
@@ -120,7 +121,6 @@ int grid_delete(char grid[][26], int GRID_SIZE){
     }
     return found_align; //Si TRUE,on suprrime
 }
-
 
 
 void print_grid(char grid[][26], int GRID_SIZE, int GRID_LETTERS){
@@ -419,6 +419,7 @@ void gravite_new(char grid[][26], int GRID_SIZE, int GRID_LETTERS){
     
 }
 
+
 int good_grid(char grid[][26], int GRID_SIZE, int GRID_LETTERS){
     char del = ' '; // caractère qui représente une case vide
     for(int j=0;j< GRID_SIZE; j++){
@@ -431,6 +432,7 @@ int good_grid(char grid[][26], int GRID_SIZE, int GRID_LETTERS){
 
     return 1; //return 1 si il la grille ne contient aucune case vide
 }
+
 
 int score(char grid[][26], int GRID_SIZE, int GRID_LETTERS, int *p){
 
@@ -462,6 +464,7 @@ int score(char grid[][26], int GRID_SIZE, int GRID_LETTERS, int *p){
     
 }
 
+
 void game(char grid[][26], int GRID_SIZE, int GRID_LETTERS){
     int *p, gs=0;
     int point=0;
@@ -472,7 +475,7 @@ void game(char grid[][26], int GRID_SIZE, int GRID_LETTERS){
         moveLetter(grid, GRID_SIZE, GRID_LETTERS);
         point = score(grid, GRID_SIZE, GRID_LETTERS,p);
          do{
-           gravite_new(grid, GRID_SIZE, GRID_LETTERS); //gravité plus faire apparaitre des nouvelles lettres
+           gravite_new(grid, GRID_SIZE, GRID_LETTERS); //gravité + faire apparaitre des nouvelles lettres
            point = score(grid, GRID_SIZE, GRID_LETTERS,p);
            grid_delete(grid, GRID_SIZE); //supprimer si il y a encore des lettres alignés
          }while(good_grid(grid, GRID_SIZE, GRID_LETTERS)==0); //verifier qu'il n'y a pas de case vide dans la grille
