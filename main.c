@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "grid.h"
 #include"game.h"
 
 //Définition des fonctions pour éviter des problèmes d'appels
