@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
-#ifndef GRID_H //Inclusion des fonctions nécessaires pour la fonction
+#ifndef GRID_H//Inclusion des fonctions nécessaires pour la fonction
     #define GRID_H
     #include "grid.h"
     #endif
@@ -13,9 +12,7 @@
     #define MOVEMENT_H
     #include "movement.h"
     #endif
-int score(char grid[][26], int GRID_SIZE, int GRID_LETTERS, int *p);
-void game(char grid[][26], int GRID_SIZE, int GRID_LETTERS);
-int game_stopper(char grid[][26], int GRID_SIZE, int p);
+int game_stopper(char grid[][26], int GRID_SIZE, int p);//Définition des fonctions éviter des erreus d'appel
 
 
 int score(char grid[][26], int GRID_SIZE, int GRID_LETTERS, int *p){
