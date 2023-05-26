@@ -14,18 +14,18 @@ void moveLetter(char grid[][26], int GRID_SIZE, int GRID_LETTERS);
 
 void moveLetter(char grid[][26], int GRID_SIZE, int GRID_LETTERS) {
     int x1, x2, x3, x4, y3, y4;
-    char  y1 ,y2;
+    char  y1 ,y2, max='A'+GRID_LETTERS+1; //max correspond à la lettre de la dernière colonne la grille
     printf("Entrez les coordonnees de la lettre que vous voulez deplacer (ligne, colonne): ");
     scanf("%d %c", &x1, &y1);
     //On vérifie que l'élément est dans le tableau
-    if (x1 < 0 || x1 > GRID_SIZE+1 || y1 < 'A' || y1 > 'Z') {
+    if (x1 < 0 || x1 > GRID_SIZE+1 || y1 < 'A' || y1 > max) {
         printf("Coordonnees invalides. Entrez de nouvelles coordonnees.\n");
         return moveLetter(grid, GRID_SIZE,GRID_LETTERS);
     }
     printf("Entrez les coordonnees de la destination (ligne, colonne): ");
     scanf("%d %c", &x2, &y2);
     //On vérifie que l'élément est dans le tableau
-    if (x2 < 0 || x2 > GRID_SIZE+1 || y2 < 'A' || y2 > 'Z') {
+    if (x2 < 0 || x2 > GRID_SIZE+1 || y2 < 'A' || y2 > max) {
         printf("Coordonnees invalides,vous sortez du tableau. Entrez de nouvelles coordonnees.\n");
         return moveLetter(grid, GRID_SIZE,GRID_LETTERS);
     }
