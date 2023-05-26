@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 #ifndef GRID_H //Inclusion des fonctions nécessaires pour la fonction
     #define GRID_H
     #include "grid.h"
@@ -9,7 +8,6 @@
     #define GRAVITY_H
     #include "gravity.h"
     #endif
-void moveLetter(char grid[][26], int GRID_SIZE, int GRID_LETTERS);
 
 
 void moveLetter(char grid[][26], int GRID_SIZE, int GRID_LETTERS) {
