@@ -1,9 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
-int grid_delete(char grid[][26], int GRID_SIZE);
-void gravite_new(char grid[][26], int GRID_SIZE, int GRID_LETTERS);
-int good_grid(char grid[][26], int GRID_SIZE, int GRID_LETTERS);
 
 
 int grid_delete(char grid[][26], int GRID_SIZE){
@@ -105,33 +101,29 @@ int grid_delete(char grid[][26], int GRID_SIZE){
 
 void gravite_new(char grid[][26], int GRID_SIZE, int GRID_LETTERS){
     char del = ' '; //caractère qui représente une case vide
- 
     for(int rep=0; rep<GRID_SIZE;rep++){ //permet d'afficher les cases vide
-     for(int i= 1; i <GRID_SIZE ; i++){
-                for(int j= 0; j< GRID_SIZE; j++){
-                    if(grid[i][j] == del){
-                       grid[i][j] = grid[i-1][j];
-                       grid[i-1][j] = del;
-                    }
+        for(int i= 1; i <GRID_SIZE ; i++){
+            for(int j= 0; j< GRID_SIZE; j++){
+                if(grid[i][j] == del){
+                    grid[i][j] = grid[i-1][j];
+                    grid[i-1][j] = del;
                 }
-            
-         }
+            }
+        }
     }
-        for (int j = 0; j < GRID_SIZE; j++) {       //permet de remplir les cases vides 
-            do {
-                if(grid[0][j]==del){//verifier si il y a une case vide
-            	 grid[0][j] = 'A' + rand() % GRID_LETTERS;
+    for (int j = 0; j < GRID_SIZE; j++) {       //permet de remplir les cases vides 
+        do {
+            if(grid[0][j]==del){//verifier si il y a une case vide
+                grid[0][j] = 'A' + rand() % GRID_LETTERS;
                 for(int i=1; i<GRID_SIZE; i++){
                     if (grid[i][j] == del){
-                       grid[i][j] = grid[i-1][j];
-                       grid[i-1][j] = del;
+                        grid[i][j] = grid[i-1][j];
+                        grid[i-1][j] = del;
                     }
                 }
             }
-            }while(grid[0][j] == del);
-        }
-    
-    
+        }while(grid[0][j] == del);
+    } 
 }
 
 
@@ -144,6 +136,5 @@ int good_grid(char grid[][26], int GRID_SIZE, int GRID_LETTERS){
             }
         }
     }
-
     return 1; //return 1 si il la grille ne contient aucune case vide
 }
