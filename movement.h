@@ -12,7 +12,7 @@
 
 void moveLetter(char grid[][26], int GRID_SIZE, int GRID_LETTERS) {
     int x1, x2, x3, x4, y3, y4;
-    char  y1 ,y2, max='A'+GRID_LETTERS+1; //max correspond à la lettre de la dernière colonne la grille
+    char  y1 ,y2, max='A'+GRID_SIZE; //max correspond à la lettre de la dernière colonne la grille
     printf("Entrez les coordonnees de la lettre que vous voulez deplacer (ligne, colonne): ");
     scanf("%d %c", &x1, &y1);
     //On vérifie que l'élément est dans le tableau
