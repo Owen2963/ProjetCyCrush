@@ -1,16 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include"game.h"
-
-//Définition des fonctions pour éviter des problèmes d'appels
-char generateGrid(char grid[][26], int GRID_SIZE, int GRID_LETTERS);
-int grid_delete(char grid[][26], int GRID_SIZE);
-void print_grid(char grid[][26], int GRID_SIZE, int GRID_LETTERS);
-int game_stopper(char grid[][26], int GRID_SIZE, int p);
-void grid_filler(char grid[][26], int GRID_SIZE, int GRID_LETTERS);
-int good_grid(char grid[][26], int GRID_SIZE, int GRID_LETTERS);
-
+#include"game.h"//Inclusion des fonctions nécessaires pour la fonction
 
 int main() {
     int GRID_SIZE, GRID_LETTERS;
