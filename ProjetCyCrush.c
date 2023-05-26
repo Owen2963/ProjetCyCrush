@@ -374,7 +374,7 @@ void moveLetter(char grid[][26], int GRID_SIZE, int GRID_LETTERS) {
         grid[x3][y3] = grid[x4][y4];
         grid[x4][y4] = temp;
         for(int i=0; i<3;i++) {
-        grid_delete(grid, GRID_SIZE); //supression des symboles après le changement de cases
+            grid_delete(grid, GRID_SIZE); //supression des symboles après le changement de cases
         }
         print_grid(grid, GRID_SIZE, GRID_LETTERS);
     }
@@ -400,19 +400,19 @@ void gravite_new(char grid[][26], int GRID_SIZE, int GRID_LETTERS){
             
         }
     }
-        for (int j = 0; j < GRID_SIZE; j++) {       //permet de remplir les cases vides 
-            do {
-                if(grid[0][j]==del){//verifier si il y a une case vide
-            	 grid[0][j] = 'A' + rand() % GRID_LETTERS;
+    for (int j = 0; j < GRID_SIZE; j++) {       //permet de remplir les cases vides 
+        do {
+            if(grid[0][j]==del){//verifier si il y a une case vide
+                grid[0][j] = 'A' + rand() % GRID_LETTERS;
                 for(int i=1; i<GRID_SIZE; i++){
                     if (grid[i][j] == del){
-                       grid[i][j] = grid[i-1][j];
-                       grid[i-1][j] = del;
+                        grid[i][j] = grid[i-1][j];
+                        grid[i-1][j] = del;
                     }
                 }
             }
-            }while(grid[0][j] == del);
-        }    
+        }while(grid[0][j] == del);
+    }    
 }
 
 
@@ -550,12 +550,12 @@ int main() {
     printf("\033[1;37m");
     printf("\n");
     do{
-    printf("Entrez la taille de la grille (entre 4 et 26): ");
-    scanf("%d", &GRID_SIZE);
+        printf("Entrez la taille de la grille (entre 4 et 26): ");
+        scanf("%d", &GRID_SIZE);
     }while(GRID_SIZE<4||GRID_SIZE>26);
     do{
-    printf("Entrez le nombre de lettres que vous voulez dans la grille (entre 4 et 6) : ");
-    scanf("%d", &GRID_LETTERS);
+        printf("Entrez le nombre de lettres que vous voulez dans la grille (entre 4 et 6) : ");
+        scanf("%d", &GRID_LETTERS);
     }while(GRID_LETTERS<4||GRID_LETTERS>6);
     char grid[GRID_SIZE][26];
     generateGrid(grid, GRID_SIZE, GRID_LETTERS);
