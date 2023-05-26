@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-void print_grid(char grid[][26], int GRID_SIZE, int GRID_LETTERS);
-char generateGrid(char grid[][26], int GRID_SIZE, int GRID_LETTERS);
+void print_grid(char grid[][26], int GRID_SIZE, int GRID_LETTERS); //Définition des fonctions éviter des erreus d'appel
 
 
 char generateGrid(char grid[][26], int GRID_SIZE, int GRID_LETTERS){
