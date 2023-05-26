@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #ifndef GRID_H//Inclusion des fonctions nécessaires pour la fonction
     #define GRID_H
     #include "grid.h"
@@ -12,7 +13,7 @@
     #define MOVEMENT_H
     #include "movement.h"
     #endif
-int game_stopper(char grid[][26], int GRID_SIZE, int p);//Définition des fonctions éviter des erreus d'appel
+int game_stopper(char grid[][26], int GRID_SIZE, int p, time_t debut);//Définition des fonctions éviter des erreus d'appel
 
 
 int score(char grid[][26], int GRID_SIZE, int GRID_LETTERS, int *p){
@@ -37,36 +38,36 @@ int score(char grid[][26], int GRID_SIZE, int GRID_LETTERS, int *p){
                         *p+=50;
                 }
             }
-        }
-
+    }  
     return *p;
-    
 }
 
 
-void game(char grid[][26], int GRID_SIZE, int GRID_LETTERS){
+void game(char grid[][26], int GRID_SIZE, int GRID_LETTERS, int p1){
     int *p, gs=0;
-    int point=0;
+    int point=p1;
     p=&point;
     char del = ' ';
+    time_t debut; //valeur intégrale contenant le nombre de secondes (sans compter les secondes intercalaires) depuis 00:00
+    debut=time(NULL) ;
 	do{
-        gs=game_stopper(grid, GRID_SIZE, point);
-        moveLetter(grid, GRID_SIZE, GRID_LETTERS);
-        point = score(grid, GRID_SIZE, GRID_LETTERS,p);
+        gs=game_stopper(grid, GRID_SIZE, point, debut);
+        moveLetter(grid, GRID_SIZE, GRID_LETTERS, point, debut);
+        point = score(grid, GRID_SIZE, GRID_LETTERS, p);
          do{
            gravite_new(grid, GRID_SIZE, GRID_LETTERS); //gravité + faire apparaitre des nouvelles lettres
-           point = score(grid, GRID_SIZE, GRID_LETTERS,p);
            grid_delete(grid, GRID_SIZE); //supprimer si il y a encore des lettres alignés
+           point = score(grid, GRID_SIZE, GRID_LETTERS,p);
          }while(good_grid(grid, GRID_SIZE, GRID_LETTERS)==0); //verifier(tant que) qu'il n'y a pas de case vide dans la grille
         print_grid(grid, GRID_SIZE, GRID_LETTERS);
-        printf("Points: %d\n", point);
+        printf("Score: %d\n", point);
     }while (gs!=1); //tant que le jeu n'est pas fini 
     exit(1);
 }
 
 
-int game_stopper(char grid[][26], int GRID_SIZE, int p){// vérification que le joueur ne peut plus aligner 3 lettres
-    char joueur[30];
+int game_stopper(char grid[][26], int GRID_SIZE, int p, time_t debut){// vérification que le joueur ne peut plus aligner 3 lettres
+    char joueur[20];
     int verifier=0, t=GRID_SIZE*GRID_SIZE, x1, y1, x2, y2, x3, y3, x4, y4;
     for(int x=0; x<GRID_SIZE; x++){
         for(int y=0; y<GRID_SIZE; y++){
@@ -119,9 +120,30 @@ int game_stopper(char grid[][26], int GRID_SIZE, int p){// vérification que le 
         }
     }
     if(verifier==t){
+        time_t fin; //valeur intégrale contenant le nombre de secondes (sans compter les secondes intercalaires) depuis 00:00
+        float difference ;// différence de temps entre le début et la fin du jeu
+        fin=time(NULL) ;
+        difference = difftime(fin, debut) ;
+        printf("\n\nIl s'est ecoule %lf secondes", difference) ;
         printf("Votre Gamertag : ");
         scanf("%s\n",joueur);
-        printf("%s, vous avais fait %d points\n",joueur, p);
+        printf("%s, vous avez fait %d points\n",joueur, p);
+        FILE* fichier = NULL;
+        // ouverture du fichier test.txt en lecture/écriture
+        fichier = fopen("Joueurs.txt", "w+");
+        if (fichier == NULL){
+            printf("Ouverture du fichier impossible\n");
+            exit(1);
+        }
+        else{
+            fprintf(fichier, "Joueur %s a fait %d points en %f secondes. Grille:", joueur, p, difference);
+            for (int i = 0; i < GRID_SIZE; i++) {
+                for (int j = 0; j < GRID_SIZE; j++) {
+                    fputc(grid[i][j], fichier);
+                }
+            }
+        }
+        fclose(fichier);
         return 1;
     }
     else{
