@@ -52,7 +52,7 @@ void game(char grid[][26], int GRID_SIZE, int GRID_LETTERS, int p1){
     debut=time(NULL) ;
 	do{
         gs=game_stopper(grid, GRID_SIZE, point, debut);
-        moveLetter(grid, GRID_SIZE, GRID_LETTERS, point, debut);
+        moveLetter(grid, GRID_SIZE, GRID_LETTERS, point);
         point = score(grid, GRID_SIZE, GRID_LETTERS, p);
          do{
            gravite_new(grid, GRID_SIZE, GRID_LETTERS); //gravité + faire apparaitre des nouvelles lettres
@@ -137,11 +137,6 @@ int game_stopper(char grid[][26], int GRID_SIZE, int p, time_t debut){// vérifi
         }
         else{
             fprintf(fichier, "Joueur %s a fait %d points en %f secondes. Grille:", joueur, p, difference);
-            for (int i = 0; i < GRID_SIZE; i++) {
-                for (int j = 0; j < GRID_SIZE; j++) {
-                    fputc(grid[i][j], fichier);
-                }
-            }
         }
         fclose(fichier);
         return 1;
