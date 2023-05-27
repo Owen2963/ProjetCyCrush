@@ -11,19 +11,14 @@
     #endif
 
 
-void moveLetter(char grid[][26], int GRID_SIZE, int GRID_LETTERS, int p, time_t debut) {
+void moveLetter(char grid[][26], int GRID_SIZE, int GRID_LETTERS, int p) {
     int x1, x2, x3, x4, y3, y4;
     char  y1 ,y2, max='A'+GRID_SIZE, joueur[20]; //max correspond à la lettre de la dernière colonne la grille
     printf("Entrez les coordonnees de la lettre que vous voulez deplacer (ligne, colonne): ");
     scanf("%d %c", &x1, &y1);
     //On vérifie que l'élément est dans le tableau
     if(x1==50 && y1=='S'){// Si le joueur souhaite souvegarder sa partie il écrit save
-        time_t fin; //valeur intégrale contenant le nombre de secondes (sans compter les secondes intercalaires) depuis 00:00
-        float difference ;// différence de temps entre le début et la fin du jeu
         char del=' ', del1=1;
-        fin=time(NULL) ;
-        difference = difftime(fin, debut) ;
-        printf("Il s'est ecoule %f secondes\n", difference) ;
         printf("Votre Gamertag : ");
         scanf("%s",joueur);
         printf("%s, vous avez fait %d points\n",joueur, p);
@@ -35,32 +30,32 @@ void moveLetter(char grid[][26], int GRID_SIZE, int GRID_LETTERS, int p, time_t 
         exit(1);
         }
         else{
-            fprintf(fichier, "Joueur %s a fait %d points en %f secondes. Grille:", joueur, p, difference);
+            fprintf(fichier, "%d %d Grille:", p, GRID_SIZE);
             for (int i = 0; i < GRID_SIZE; i++) {
                 for (int j = 0; j < GRID_SIZE; j++) {
                     fputc(grid[i][j], fichier);
-
                 }
             }
+            printf("Votre grille et votre score ont été sauvegardés\n");
         }
         fclose(fichier);
         exit(1);
     }
     if (x1 < 0 || x1 > GRID_SIZE+1 || y1 < 'A' || y1 > max) {
         printf("Coordonnees invalides. Entrez de nouvelles coordonnees.\n");
-        return moveLetter(grid, GRID_SIZE,GRID_LETTERS, p, debut);
+        return moveLetter(grid, GRID_SIZE,GRID_LETTERS, p);
     }
     printf("Entrez les coordonnees de la destination (ligne, colonne): ");
     scanf("%d %c", &x2, &y2);
     //On vérifie que l'élément est dans le tableau
     if (x2 < 0 || x2 > GRID_SIZE+1 || y2 < 'A' || y2 > max) {
         printf("Coordonnees invalides,vous sortez du tableau. Entrez de nouvelles coordonnees.\n");
-        return moveLetter(grid, GRID_SIZE,GRID_LETTERS, p, debut);
+        return moveLetter(grid, GRID_SIZE,GRID_LETTERS, p);
     }
     //On vérifie que la case de destination n'est pas à une distance supérieure à une unité horizontalement ou verticalement de la case de départ et n'est pas la case de départ
     else if ((abs(x2 - x1) > 1) || (abs(y2 - y1) > 1) || (x1==x2 && y1==y2)) {
         printf("Coordonnees invalides, les cases ne sont pas cote a cote. Entrez de nouvelles coordonnees.\n");
-        return moveLetter(grid, GRID_SIZE,GRID_LETTERS, p, debut);
+        return moveLetter(grid, GRID_SIZE,GRID_LETTERS, p);
     }
     switch(y1){
         case 'A':
@@ -248,6 +243,6 @@ void moveLetter(char grid[][26], int GRID_SIZE, int GRID_LETTERS, int p, time_t 
         printf("\033[1;31m");
         printf("Le deplacement doit aligner au minimum 3 symboles identiques\n");
         printf("\033[1;37m");
-        moveLetter(grid, GRID_SIZE, GRID_LETTERS, p, debut);
+        moveLetter(grid, GRID_SIZE, GRID_LETTERS, p);
     }
 }
