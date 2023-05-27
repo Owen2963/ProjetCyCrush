@@ -31,27 +31,18 @@ int main() {
     for (int i = 0; i < GRID_SIZE; i++) {
         for (int j = 0; j < GRID_SIZE; j++) {
             if(grid[i][j]=='F'){
-                m1=6;
+                GRID_LETTERS=6;
                 break;
             }
             if(grid[i][j]=='E'){
-                m2=5;
+                GRID_LETTERS=5;
                 break;
             }
             if(grid[i][j]=='D'){
-                m3=4;
+                GRID_LETTERS=4;
                 break;
             }
         }
-    }
-    if(m1!=0){
-        GRID_LETTERS=m1;
-    }
-    else if(m2!=0){
-        GRID_LETTERS=m2;
-    }
-    else if(m3!=0){
-        GRID_LETTERS=m3;
     }
     print_grid(grid, GRID_SIZE, GRID_LETTERS);
     game(grid, GRID_SIZE, GRID_LETTERS,p);
