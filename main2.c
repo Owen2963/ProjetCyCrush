@@ -4,7 +4,7 @@
 
 int main() {
     FILE* fichier = NULL;
-    int GRID_SIZE=0, GRID_LETTERS, p, m1=0, m2=0, m3=0;
+    int GRID_SIZE, GRID_LETTERS, p, m1=0, m2=0, m3=0;
     char del;
     // ouverture du fichier test.txt en lecture/écriture
     fichier = fopen("Joueurs.txt", "r+");
@@ -17,15 +17,14 @@ int main() {
     printf("Ecrivez 50S pour sauvegarder votre jeu");
     printf("\033[1;37m");
     printf("\n");
-    do{
-        printf("Pourriez écrire le nombre de ligne et colonnes du fichier svp. Les lignes correspondent au nombre lettres entre les SOH dans le fichier Joueurs.txt :");
-        scanf("%d", &GRID_SIZE);
-    }while(GRID_SIZE<4||GRID_SIZE>26);
-    char grid[GRID_SIZE][26];
     fscanf(fichier, "%d", &p);
-    for (int i = 0; i < GRID_SIZE; i++) {
+    fscanf(fichier, "%d", &GRID_SIZE);
+    do{
+        fscanf(fichier, "%c", &del);
+    }while (del!=':');    
+    char grid[GRID_SIZE][26];
+    for (int i = 0; i <GRID_SIZE; i++) {
         for (int j = 0; j<GRID_SIZE; j++) {
-            fseek(fichier, 0, SEEK_END);
             grid[i][j]=fgetc(fichier);
         }
     }
@@ -55,5 +54,6 @@ int main() {
         GRID_LETTERS=m3;
     }
     print_grid(grid, GRID_SIZE, GRID_LETTERS);
+    game(grid, GRID_SIZE, GRID_LETTERS,p);
     return 0;
 }
