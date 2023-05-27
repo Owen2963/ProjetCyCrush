@@ -36,7 +36,7 @@ void moveLetter(char grid[][26], int GRID_SIZE, int GRID_LETTERS, int p) {
                     fputc(grid[i][j], fichier);
                 }
             }
-            printf("Votre grille et votre score ont été sauvegardés\n");
+            printf("Votre grille et votre score ont ete sauvegardes\n");
         }
         fclose(fichier);
         exit(1);
