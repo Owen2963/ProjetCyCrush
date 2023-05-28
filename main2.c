@@ -4,7 +4,7 @@
 
 int main() {
     FILE* fichier = NULL;
-    int GRID_SIZE, GRID_LETTERS, p, m1=0, m2=0, m3=0;
+    int GRID_SIZE, GRID_LETTERS, p;
     char del;
     // ouverture du fichier test.txt en lecture/écriture
     fichier = fopen("Joueurs.txt", "r+");
